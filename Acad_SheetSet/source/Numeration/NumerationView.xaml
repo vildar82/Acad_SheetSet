@@ -1,0 +1,52 @@
+﻿<wpf:BaseWindow x:Class="Acad_SheetSet.Numeration.NumerationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Acad_SheetSet.Numeration"
+        xmlns:wpf="clr-namespace:NetLib.WPF;assembly=NetLib"
+        xmlns:select="clr-namespace:Acad_SheetSet.Select"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:converters="clr-namespace:NetLib.WPF.Converters;assembly=NetLib"
+        xmlns:nodes="clr-namespace:Acad_SheetSet.Data.Nodes"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        d:DataContext="{d:DesignInstance local:NumerationVM, IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"
+        Title="Нумарация листов подшивки">
+    <Grid>
+		<Grid.Resources>
+			<HierarchicalDataTemplate ItemsSource="{Binding Nodes}" DataType="{x:Type nodes:SubsetNode}" >
+				<TextBlock Text="{Binding Name}" />
+			</HierarchicalDataTemplate>
+			<DataTemplate DataType="{x:Type nodes:SheetNode}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Number}" Margin="1" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding CrossNumber, StringFormat= - сквозной номер \{0\}}"/>
+                </Grid>
+			</DataTemplate>
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <select:SSSelectControl Grid.Row="0" DataContext="{Binding Select}"/>
+        <GroupBox Grid.Row="1" Visibility="{Binding Select.SheetSet, 
+            Converter={converters:NullVisibilityConverter}}">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Select.SheetSet.Name}" Margin="1"/>
+                    <Button Command="{Binding Update}" Margin="1" Content="{iconPacks:Material Refresh}"/>
+                </StackPanel>
+            </GroupBox.Header>
+            <TreeView ItemsSource="{Binding Select.SheetSet.Nodes}"/>
+        </GroupBox>
+        <ListBox Grid.Row="2" ItemsSource="{Binding Select.SheetSet.Nodes}"/>
+    </Grid>
+</wpf:BaseWindow>

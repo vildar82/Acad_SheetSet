@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet", "Acad_SheetSet\Acad_SheetSet.csproj", "{00D1461E-F693-43B8-BC2E-EA1119F0497B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet_v2016", "Acad_SheetSet\Acad_SheetSet_v2016.csproj", "{00D1461E-F693-43B8-BC2E-EA1119F0497B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,5 +21,16 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D577B313-6F1A-49C5-9CC5-9C60E19CD184}
+	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion.Debug|Any CPU = True
+		UpdateAssemblyFileVersion.Debug|Any CPU = True
+		UpdateAssemblyInfoVersion.Debug|Any CPU = True
+		AssemblyVersionSettings.Debug|Any CPU = None.None.None.None
+		AssemblyFileVersionSettings.Debug|Any CPU = None.None.None.None
+		AssemblyInfoVersionSettings.Debug|Any CPU = None.None.None.None
+		UpdatePackageVersion.Debug|Any CPU = False
+		AssemblyInfoVersionType.Debug|Any CPU = SettingsVersion
+		InheritWinAppVersionFrom.Debug|Any CPU = None
 	EndGlobalSection
 EndGlobal

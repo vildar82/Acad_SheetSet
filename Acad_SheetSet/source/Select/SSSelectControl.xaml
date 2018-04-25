@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Acad_SheetSet.Select.SSSelectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Acad_SheetSet.Select"
+             xmlns:select="clr-namespace:Acad_SheetSet.Select"
+             xmlns:data="clr-namespace:Acad_SheetSet.Data"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             d:DataContext="{d:DesignInstance select:SSSelect}"
+             mc:Ignorable="d">
+	<UserControl.Resources>
+		<DataTemplate x:Key="dtSheetSetName" DataType="data:SheetSet">
+			<TextBlock Text="{Binding Name}" ToolTip="{Binding File}" VerticalAlignment="Center" Margin="1"/>
+		</DataTemplate>
+	</UserControl.Resources>
+	<GroupBox Header="Выбор подшивки" Margin="2">
+		<WrapPanel Margin="1">
+			<ComboBox ItemsSource="{Binding SheetSets}" SelectedItem="{Binding SheetSet}"
+					ItemTemplate="{StaticResource dtSheetSetName}" Margin="1" MinWidth="100"/>
+			<Button Content="{iconPacks:Material FileDocument}" Margin="1" Command="{Binding SelectFile}"
+			        ToolTip="Выбрать файл подшивки"/>
+		</WrapPanel>
+	</GroupBox>
+</UserControl>
