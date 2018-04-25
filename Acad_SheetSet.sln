@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet", "Acad_SheetSet\Acad_SheetSet.csproj", "{00D1461E-F693-43B8-BC2E-EA1119F0497B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D577B313-6F1A-49C5-9CC5-9C60E19CD184}
+	EndGlobalSection
+EndGlobal
