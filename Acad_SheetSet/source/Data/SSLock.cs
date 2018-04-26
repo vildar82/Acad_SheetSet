@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
+// 2018 04 25 16:26
+
+using System;
 using ACSMCOMPONENTS20Lib;
 using JetBrains.Annotations;
 
@@ -16,10 +15,12 @@ namespace Acad_SheetSet.Data
         {
             this.ssDb = ssDb;
             if (ssDb.GetLockStatus() == AcSmLockStatus.AcSmLockStatus_UnLocked)
-            {
                 ssDb.LockDb(ssDb);
+            else
+            {
+                ssDb.GetLockOwnerInfo(out var user, out var machine);
+                throw new Exception($"Подшивка заблокарована {user}, {machine}. Попробуйте позже.");
             }
-            throw new Exception("Подшивка заблокарована. Попробуйте позже.");
         }
 
         public void Dispose()

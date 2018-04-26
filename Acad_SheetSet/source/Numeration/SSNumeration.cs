@@ -1,11 +1,10 @@
-﻿using Acad_SheetSet.Select;
-using ACSMCOMPONENTS20Lib;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
+// 2018 04 25 14:50
 
 namespace Acad_SheetSet.Numeration
 {
     /// <summary>
-    /// Нумерация листов подшивки
+    ///     Нумерация листов подшивки
     /// </summary>
     public class SSNumeration
     {

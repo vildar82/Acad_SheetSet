@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
+// 2018 04 25 16:37
+
 using System.Collections.ObjectModel;
 using ACSMCOMPONENTS20Lib;
 using JetBrains.Annotations;
@@ -21,10 +23,7 @@ namespace Acad_SheetSet.Data.Nodes
         private static ObservableCollection<ISSNode> GetNodes([NotNull] AcSmSubset acSmSubset)
         {
             var nodes = new ObservableCollection<ISSNode>();
-            foreach (var comp in SsToList(acSmSubset.GetSheetEnumerator(), e => e.Next()))
-            {
-                nodes.Add(SheetSet.GetNode(comp));
-            }
+            foreach (var comp in SsToList(acSmSubset.GetSheetEnumerator(), e => e.Next())) nodes.Add(SheetSet.GetNode(comp));
             return nodes;
         }
     }

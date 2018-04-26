@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
+// 2018 04 25 14:45
+
+using System.Diagnostics;
 using AcadLib;
 using Acad_SheetSet.Numeration;
 using Autodesk.AutoCAD.Runtime;

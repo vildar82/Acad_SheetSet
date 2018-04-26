@@ -49,11 +49,15 @@
     <Reference Include="AcadLib">
       <Private>False</Private>
     </Reference>
+    <Reference Include="AutoCAD_PIK_Manager, Version=1.0.87.221, Culture=neutral, processorArchitecture=AMD64" />
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
       <Private>True</Private>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="CsvHelper, Version=7.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.7.1.0\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
@@ -96,6 +100,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -156,6 +161,16 @@
     </Compile>
     <Compile Include="source\Numeration\NumerationVM.cs" />
     <Compile Include="source\Numeration\SSNumeration.cs" />
+    <Compile Include="source\Options\SSOptions.cs" />
+    <Compile Include="source\Options\SSOptionsView.xaml.cs">
+      <DependentUpon>SSOptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="source\Options\SSOptionsVM.cs" />
+    <Compile Include="source\Props\PropsView.xaml.cs">
+      <DependentUpon>PropsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="source\Props\PropsVM.cs" />
+    <Compile Include="source\Props\SSProp.cs" />
     <Compile Include="source\Select\SSSelect.cs" />
     <Compile Include="source\Select\SSSelectControl.xaml.cs">
       <DependentUpon>SSSelectControl.xaml</DependentUpon>
@@ -189,6 +204,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="source\Numeration\NumerationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="source\Options\SSOptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="source\Props\PropsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

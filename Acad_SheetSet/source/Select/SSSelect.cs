@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
+// 2018 04 25 14:55
+
+using System.Collections.Generic;
 using System.Linq;
 using Acad_SheetSet.Data;
 using Acad_SheetSet.Numeration;
@@ -16,7 +19,7 @@ namespace Acad_SheetSet.Select
     {
         private AcSmSheetSetMgr mgr;
 
-        public SSSelect(NumerationVM numerationVm) : base (numerationVm)
+        public SSSelect(NumerationVM numerationVm) : base(numerationVm)
         {
             mgr = new AcSmSheetSetMgr();
             SheetSets = new ReactiveList<SheetSet>(GetSheetSets());
@@ -24,16 +27,16 @@ namespace Acad_SheetSet.Select
             SelectFile = CreateCommand(SelectFileExec);
         }
 
+        public ReactiveCommand SelectFile { get; set; }
+
         public SheetSet SheetSet { get; set; }
 
         public ReactiveList<SheetSet> SheetSets { get; set; }
 
-        public ReactiveCommand SelectFile { get; set; }
-
         [NotNull]
         private IEnumerable<SheetSet> GetSheetSets()
         {
-            return SsToList(mgr.GetDatabaseEnumerator(), e => e.Next()).SelectTry(s=> new SheetSet(s));
+            return SsToList(mgr.GetDatabaseEnumerator(), e => e.Next()).SelectTry(s => new SheetSet(s));
         }
 
         private void SelectFileExec()
@@ -47,7 +50,7 @@ namespace Acad_SheetSet.Select
             };
             if (dialog.ShowDialog() == true)
             {
-                AcSmDatabase ssDb= null;
+                AcSmDatabase ssDb = null;
                 try
                 {
                     ssDb = mgr.FindOpenDatabase(dialog.FileName);
@@ -57,12 +60,10 @@ namespace Acad_SheetSet.Select
                     //
                 }
                 if (ssDb != null)
-                {
                     SheetSet = SheetSets.FirstOrDefault(s => s.File.EqualsIgnoreCase(dialog.FileName));
-                }
                 else
                 {
-                    ssDb =mgr.OpenDatabase(dialog.FileName);
+                    ssDb = mgr.OpenDatabase(dialog.FileName);
                     var ss = new SheetSet(ssDb);
                     SheetSets.Add(ss);
                     SheetSet = ss;
