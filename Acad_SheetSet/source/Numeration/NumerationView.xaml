@@ -50,22 +50,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <select:SSSelectControl Grid.Row="0" DataContext="{Binding Select}" />
-        <TabControl Grid.Row="1" Visibility="{Binding IsSelected}">
+        <TabControl Grid.Row="1" mah:VisibilityHelper.IsVisible="{Binding IsSelected}">
             <TabItem Header="Нумерация">
                 <!--Нумерация-->
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition />
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <Button Content="{iconPacks:Material ChevronDoubleUp}" Command="{Binding Collapse}" Margin="2" 
-                                ToolTip="Свернуть все"/>
-                        <Button Content="{iconPacks:Material ChevronDoubleDown}" Command="{Binding Expand}" Margin="2" 
-                                ToolTip="Развернуть все"/>
-                    </StackPanel>
-                    <TreeView Grid.Row="1" ItemsSource="{Binding Nodes}">
+                    <TreeView Grid.Row="0" ItemsSource="{Binding Nodes}" VerticalAlignment="Top">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
                                 <Setter Property="IsExpanded"
@@ -74,8 +68,14 @@
                             </Style>
                         </TreeView.ItemContainerStyle>
                     </TreeView>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="25,1,1,1">
+                        <Button Content="{iconPacks:Material ChevronDoubleUp}" Command="{Binding Collapse}" Margin="2" 
+                                ToolTip="Свернуть все"/>
+                        <Button Content="{iconPacks:Material ChevronDoubleDown}" Command="{Binding Expand}" Margin="2" 
+                                ToolTip="Развернуть все"/>
+                    </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center"
-                                Visibility="{Binding IsSelected}">
+                                Visibility="{Binding IsSelected}" VerticalAlignment="Top">
                         <Button Command="{Binding Update}" Margin="10,1,10,1" Content="{iconPacks:Material Refresh}"
                                 ToolTip="Обновить список листов подшивки и номеров" />
                         <Button Content="Нумерация" Command="{Binding Numeration}" Margin="2"

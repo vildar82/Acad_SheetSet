@@ -9,9 +9,14 @@ using AcadLib.Errors;
 using Acad_SheetSet.Data.Nodes;
 using Acad_SheetSet.Options;
 using Acad_SheetSet.Props;
+#if v2016
 using ACSMCOMPONENTS20Lib;
+#elif v2017
+using ACSMCOMPONENTS21Lib;
+#elif v2018
+using ACSMCOMPONENTS22Lib;
+#endif
 using JetBrains.Annotations;
-using NetLib;
 using NetLib.Monad;
 using static Acad_SheetSet.Data.SheetSetExt;
 
@@ -63,14 +68,11 @@ namespace Acad_SheetSet.Data
                 Update();
                 var crossNumber = 1;
                 var setCrossNumber = true;
-                if (!previewOnly)
+                var propCrossNumber = ss.GetProperty(options.PropCrossNumberName);
+                if (propCrossNumber == null)
                 {
-                    var propCrossNumber = ss.GetProperty(options.PropCrossNumberName);
-                    if (propCrossNumber == null)
-                    {
-                        Inspector.AddError($"В подшивке нет свойства '{options.PropCrossNumberName}' для сквозного номера.");
-                        setCrossNumber = false;
-                    }
+                    Inspector.AddError($"В подшивке нет свойства '{options.PropCrossNumberName}' для сквозного номера.");
+                    setCrossNumber = false;
                 }
                 foreach (var node in Nodes)
                 {

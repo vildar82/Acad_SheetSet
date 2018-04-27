@@ -43,6 +43,8 @@ namespace Acad_SheetSet.Numeration
 
         public ReactiveCommand Numeration { get; set; }
 
+        public bool HasCrossNumProp { get; set; }
+
         public SSSelect Select { get; set; }
         public ReactiveCommand Update { get; set; }
 

@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using AcadLib;
 using Acad_SheetSet.Batch.Nodes;
 using Acad_SheetSet.Numeration;
 using Acad_SheetSet.Options;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using AXDBLib;
 using JetBrains.Annotations;
 using NetLib.Monad;
 using NetLib.WPF;
@@ -112,30 +110,33 @@ namespace Acad_SheetSet.Batch
                 ShowMessage("Отключена обработка файлов и листов.");
                 return;
             }
-            var nodeFile = Nodes.First();
-            nodeFile.BatchResult = null;
-            nodeFile.Color = null;
-            BatchFile(nodeFile);
+            Execute(AcadHelper.Doc, nameof(Commands._InternalUse_SSBatchSession) + " ");
         }
 
-        private void BatchFile([CanBeNull] NodeFile nodeFile)
-        {
-            if (nodeFile == null)
-            {
-                internalFile = null;
-                return;
-            }
-            internalFile = nodeFile;
-            nodeFile.NeedCloseFile = false;
-            var doc = AcadHelper.GetOpenedDocument(nodeFile.Name);
-            if (doc == null)
-            {
-                nodeFile.NeedCloseFile = true;
-                doc = Application.DocumentManager.Open(nodeFile.Name);
-                Application.DocumentManager.MdiActiveDocument = doc;
-            }
-            Execute(doc, nameof(Commands._InternalUse_SheetSetBatch) + " ");
-        }
+        //private void BatchFile([CanBeNull] NodeFile nodeFile)
+        //{
+        //    if (internalFile != null && internalFile.NeedCloseFile)
+        //    {
+        //        var adoc = AcadHelper.Doc;
+        //        adoc.Try(d => d.CloseAndDiscard());
+        //    }
+
+        //    if (nodeFile == null)
+        //    {
+        //        internalFile = null;
+        //        return;
+        //    }
+        //    internalFile = nodeFile;
+        //    nodeFile.NeedCloseFile = false;
+        //    var doc = AcadHelper.GetOpenedDocument(nodeFile.Name);
+        //    if (doc == null)
+        //    {
+        //        nodeFile.NeedCloseFile = true;
+        //        doc = Application.DocumentManager.Open(nodeFile.Name);
+        //        Application.DocumentManager.MdiActiveDocument = doc;
+        //    }
+        //    Execute(doc, nameof(Commands._InternalUse_SSBatchModal) + " ");
+        //}
 
         private static void BatchLayout([NotNull] Document doc, [NotNull] NodeLayout nodeLayout)
         {
@@ -145,7 +146,7 @@ namespace Acad_SheetSet.Batch
 
         private static void Execute([NotNull] Document doc, [NotNull] string execute)
         {
-            doc.SendStringToExecute(execute, true, false, true);
+            doc.SendStringToExecute(execute, true, false, false);
         }
 
         private static void Command([NotNull] Document doc, [NotNull] string command)
@@ -153,7 +154,7 @@ namespace Acad_SheetSet.Batch
             doc.Editor.Command(command);
         }
 
-        public static void InternalBatch([NotNull] Document doc)
+        public static void InternalBatchModal([NotNull] Document doc)
         {
             if (internalFile == null) return;
             try
@@ -163,6 +164,7 @@ namespace Acad_SheetSet.Batch
                     if (!doc.Database.TileMode)
                         doc.Database.TileMode = true;
                     Command(doc, batchVm.Options.FileExecute);
+                    internalFile.Color = okColor;
                 }
                 if (batchVm.IsBatchLayouts)
                 {
@@ -190,12 +192,38 @@ namespace Acad_SheetSet.Batch
             }
             finally
             {
+                Execute(doc, nameof(Commands._InternalUse_SSBatchSession) + " ");
+            }
+        }
+
+        public static void InternalBatchSession(Document document)
+        {
+            if (internalFile == null)
+            {
+                internalFile = batchVm?.Nodes?.First();
+                if (internalFile == null) return;
+            }
+            else
+            {
                 if (internalFile.NeedCloseFile)
                 {
-                    doc.Try(d=>d.CloseAndDiscard());
+                    var adoc = AcadHelper.Doc;
+                    adoc.Try(d => d.CloseAndDiscard());
                 }
-                batchVm.BatchFile(internalFile.NextFile);
+                internalFile = internalFile.NextFile;
+                if (internalFile == null) return;
+                internalFile.NeedCloseFile = false;   
             }
+            internalFile.BatchResult = null;
+            internalFile.Color = null;
+            var doc = AcadHelper.GetOpenedDocument(internalFile.Name);
+            if (doc == null)
+            {
+                internalFile.NeedCloseFile = true;
+                doc = Application.DocumentManager.Open(internalFile.Name);
+                Application.DocumentManager.MdiActiveDocument = doc;
+            }
+            Execute(doc, nameof(Commands._InternalUse_SSBatchModal) + " ");
         }
     }
 }

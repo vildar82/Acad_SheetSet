@@ -29,10 +29,16 @@ namespace Acad_SheetSet
             CommandStart.Start(d => new SSNumeration().Numeration());
         }
 
-        [CommandMethod(Group, nameof(_InternalUse_SheetSetBatch), CommandFlags.Modal)]
-        public static void _InternalUse_SheetSetBatch()
+        [CommandMethod(Group, nameof(_InternalUse_SSBatchModal), CommandFlags.Modal)]
+        public static void _InternalUse_SSBatchModal()
         {
-            CommandStart.StartWoStat(BatchVM.InternalBatch);
+            CommandStart.StartWoStat(BatchVM.InternalBatchModal);
+        }
+
+        [CommandMethod(Group, nameof(_InternalUse_SSBatchSession), CommandFlags.Session)]
+        public static void _InternalUse_SSBatchSession()
+        {
+            CommandStart.StartWoStat(BatchVM.InternalBatchSession);
         }
     }
 }
