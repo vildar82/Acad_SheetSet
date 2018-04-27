@@ -7,10 +7,10 @@
                 xmlns:wpf="clr-namespace:NetLib.WPF;assembly=NetLib"
                 xmlns:select="clr-namespace:Acad_SheetSet.Select"
                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                xmlns:converters="clr-namespace:NetLib.WPF.Converters;assembly=NetLib"
                 xmlns:nodes="clr-namespace:Acad_SheetSet.Data.Nodes"
                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                 xmlns:props="clr-namespace:Acad_SheetSet.Props"
+                xmlns:batch="clr-namespace:Acad_SheetSet.Batch"
                 d:DataContext="{d:DesignInstance local:NumerationVM, IsDesignTimeCreatable=True}"
                 mc:Ignorable="d"
                 Title="Нумарация листов подшивки">
@@ -85,6 +85,9 @@
             </TabItem>
             <TabItem Header="Свойства" mah:VisibilityHelper.IsVisible="{Binding IsBimUser}">
                 <props:PropsView DataContext="{Binding PropsVM}"/>
+            </TabItem>
+            <TabItem Header="Обработка" mah:VisibilityHelper.IsVisible="{Binding IsBimUser}">
+                <batch:BatchView DataContext="{Binding BatchVM}"/>
             </TabItem>
         </TabControl>
     </Grid>

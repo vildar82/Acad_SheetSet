@@ -12,18 +12,18 @@ namespace Acad_SheetSet.Data.Nodes
     {
         [NotNull] private readonly AcSmSubset subset;
 
-        public SubsetNode([NotNull] AcSmSubset subset)
+        public SubsetNode([NotNull] AcSmSubset subset, SheetSet ss) : base (ss)
         {
             this.subset = subset;
             Name = subset.GetName();
-            Nodes = GetNodes(subset);
+            Nodes = GetNodes();
         }
 
         [NotNull]
-        private static ObservableCollection<ISSNode> GetNodes([NotNull] AcSmSubset acSmSubset)
+        private ObservableCollection<ISSNode> GetNodes()
         {
             var nodes = new ObservableCollection<ISSNode>();
-            foreach (var comp in SsToList(acSmSubset.GetSheetEnumerator(), e => e.Next())) nodes.Add(SheetSet.GetNode(comp));
+            foreach (var comp in SsToList(subset.GetSheetEnumerator(), e => e.Next())) nodes.Add(ss.GetNode(comp));
             return nodes;
         }
     }

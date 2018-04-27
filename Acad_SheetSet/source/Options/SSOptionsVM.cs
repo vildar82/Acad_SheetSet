@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AcadLib.IO;
-using NetLib;
+﻿using NetLib;
 using NetLib.WPF;
+using Path = AcadLib.IO.Path;
 
 namespace Acad_SheetSet.Options
 {
@@ -23,7 +18,7 @@ namespace Acad_SheetSet.Options
             {
                 data.Data = new SSOptions
                 {
-                    PropCrossNumberName = "Сквозной номер"
+                    PropCrossNumberName = "СквознойНомер"
                 };
             }
             Options = data.Data;

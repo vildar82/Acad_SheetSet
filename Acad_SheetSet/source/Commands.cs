@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using AcadLib;
+using Acad_SheetSet.Batch;
 using Acad_SheetSet.Numeration;
 using Autodesk.AutoCAD.Runtime;
 using Commands = Acad_SheetSet.Commands;
@@ -22,10 +23,16 @@ namespace Acad_SheetSet
 #endif
         }
 
-        [CommandMethod(Group, nameof(PIK_SheetSetNumeration), CommandFlags.Modal)]
+        [CommandMethod(Group, nameof(PIK_SheetSetNumeration), CommandFlags.Session)]
         public static void PIK_SheetSetNumeration()
         {
             CommandStart.Start(d => new SSNumeration().Numeration());
+        }
+
+        [CommandMethod(Group, nameof(_InternalUse_SheetSetBatch), CommandFlags.Modal)]
+        public static void _InternalUse_SheetSetBatch()
+        {
+            CommandStart.StartWoStat(BatchVM.InternalBatch);
         }
     }
 }

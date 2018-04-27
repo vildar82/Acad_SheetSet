@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Acad_SheetSet.Props"
              xmlns:controls="clr-namespace:NetLib.WPF.Controls;assembly=NetLib"
-             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=mscorlib"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:converters="clr-namespace:NetLib.WPF.Converters;assembly=NetLib"
              d:DataContext="{d:DesignInstance local:PropsVM, IsDesignTimeCreatable=True}"
@@ -17,7 +16,8 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Файл CSV с параметрами: Имя,Значение,0/1, 0-подшивка,1-лист"/>
+        <TextBlock Grid.Row="0" Text="Файл CSV с параметрами:"
+                   ToolTip="Формат csv - обязательно с заголовками, пример:&#x0a;Name,Value,Type&#x0a;СквознойНомер,1,0"/>
         <controls:PathSelector Grid.Row="1" SelectedPath="{Binding CsvFile}" Margin="5"/>
         <Grid Grid.Row="2" Margin="5">
             <Grid.ColumnDefinitions>

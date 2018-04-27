@@ -17,10 +17,12 @@ namespace Acad_SheetSet.Select
 {
     public class SSSelect : BaseModel
     {
+        private readonly NumerationVM model;
         private AcSmSheetSetMgr mgr;
 
-        public SSSelect(NumerationVM numerationVm) : base(numerationVm)
+        public SSSelect(NumerationVM model) : base(model)
         {
+            this.model = model;
             mgr = new AcSmSheetSetMgr();
             SheetSets = new ReactiveList<SheetSet>(GetSheetSets());
             SheetSet = SheetSets.FirstOrDefault();
@@ -36,7 +38,7 @@ namespace Acad_SheetSet.Select
         [NotNull]
         private IEnumerable<SheetSet> GetSheetSets()
         {
-            return SsToList(mgr.GetDatabaseEnumerator(), e => e.Next()).SelectTry(s => new SheetSet(s));
+            return SsToList(mgr.GetDatabaseEnumerator(), e => e.Next()).SelectTry(s => new SheetSet(s,model.Options.Options));
         }
 
         private void SelectFileExec()
@@ -64,7 +66,7 @@ namespace Acad_SheetSet.Select
                 else
                 {
                     ssDb = mgr.OpenDatabase(dialog.FileName);
-                    var ss = new SheetSet(ssDb);
+                    var ss = new SheetSet(ssDb, model.Options.Options);
                     SheetSets.Add(ss);
                     SheetSet = ss;
                 }

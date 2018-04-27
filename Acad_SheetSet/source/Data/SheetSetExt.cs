@@ -4,10 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using Acad_SheetSet.Props;
 using ACSMCOMPONENTS20Lib;
 using JetBrains.Annotations;
+using NetLib;
+using NetLib.Monad;
 
 namespace Acad_SheetSet.Data
 {
@@ -44,7 +45,8 @@ namespace Acad_SheetSet.Data
         }
 
         [NotNull]
-        public static List<SSProp> GetCustomProperties([NotNull] this IAcSmComponent comp, bool removeProps = false)
+        public static List<SSProp> GetCustomProperties([NotNull] this IAcSmComponent comp, bool removeProps = false, 
+            [CanBeNull] SheetSet ss = null)
         {
             var cpb = comp.GetCustomPropertyBag();
             var props = new List<SSProp>();
@@ -71,6 +73,22 @@ namespace Acad_SheetSet.Data
                 props.Add(prop);
                 if (removeProps)
                 {
+                    if (flags == PropertyFlags.CUSTOM_SHEET_PROP && ss != null)
+                    {
+                        // Удалить это свойство во всех листах
+                        var sheets = ss.Nodes.SelectMany(s => s.GetSheets());
+                        foreach (var sheet in sheets)
+                        {
+                            try
+                            {
+                                sheet.sheet.GetCustomPropertyBag().SetProperty(propName, null);
+                            }
+                            catch
+                            {
+                                //
+                            }
+                        }
+                    }
                     cpb.SetProperty(propName,null);
                 }
             }
@@ -87,13 +105,21 @@ namespace Acad_SheetSet.Data
         }
 
         public static void AddCustomProperty([NotNull] this AcSmCustomPropertyBag bag, [NotNull] IAcSmComponent comp,
-            [NotNull] SSProp prop)
+            [NotNull] SSProp prop, [CanBeNull] SheetSet ss = null)
         {
             var customProp = new AcSmCustomPropertyValue();
             customProp.InitNew(comp);
             customProp.SetFlags(GetPropType(prop.Type));
             customProp.SetValue(prop.Value);
             bag.SetProperty(prop.Name, customProp);
+            if (prop.Type == PropType.Sheet && ss != null)
+            {
+                foreach (var sheet in ss.Nodes.SelectMany(s=>s.GetSheets()))
+                {
+                    var sheetBag = sheet.sheet.GetCustomPropertyBag();
+                    sheetBag?.AddCustomProperty(sheet.sheet, prop);
+                }
+            }
         }
     }
 }

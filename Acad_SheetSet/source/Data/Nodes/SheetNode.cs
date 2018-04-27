@@ -10,21 +10,25 @@ namespace Acad_SheetSet.Data.Nodes
 {
     public class SheetNode : BaseNode
     {
-        public const string propCrossNumber = "Сквозной номер";
-        [NotNull] private readonly AcSmSheet sheet;
+        [NotNull] public readonly AcSmSheet sheet;
 
-        public SheetNode([NotNull] AcSmSheet sheet)
+        public SheetNode([NotNull] AcSmSheet sheet, [NotNull] SheetSet ss) : base(ss)
         {
             this.sheet = sheet;
             Name = sheet.GetTitle();
             Number = sheet.GetNumber();
-            CrossNumber = sheet.GetCustomPropertyValue(propCrossNumber)?.ToString();
+            CrossNumber = sheet.GetCustomPropertyValue(ss.options.PropCrossNumberName)?.ToString();
             this.WhenAnyValue(v => v.NumberNew)
                 .Subscribe(s => HasNewNumber = NumberNew != null && NumberNew != Number);
             this.WhenAnyValue(v => v.CrossNumberNew)
                 .Subscribe(s => HasNewCrossNumber = CrossNumberNew != null && CrossNumberNew != CrossNumber);
+            var layout = sheet.GetLayout();
+            Layout = layout.GetName();
+            File = layout.GetFileName();
         }
 
+        public string Layout { get; set; }
+        public string File { get; set; }
         /// <summary>
         ///     Сквозной номер
         /// </summary>
@@ -51,7 +55,7 @@ namespace Acad_SheetSet.Data.Nodes
 
         public void SetCrossNumber()
         {
-            sheet.SetCustomPropertyValue(propCrossNumber, CrossNumberNew);
+            sheet.SetCustomPropertyValue(ss.options.PropCrossNumberName, CrossNumberNew);
         }
 
         public void SetNumber()

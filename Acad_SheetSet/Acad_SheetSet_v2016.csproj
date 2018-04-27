@@ -148,6 +148,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="source\Batch\Nodes\NodeBase.cs" />
+    <Compile Include="source\Batch\BatchView.xaml.cs">
+      <DependentUpon>BatchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="source\Batch\BatchVM.cs" />
+    <Compile Include="source\Batch\Nodes\NodeFile.cs" />
+    <Compile Include="source\Batch\Nodes\NodeLayout.cs" />
     <Compile Include="source\Commands.cs" />
     <Compile Include="source\Data\Nodes\BaseNode.cs" />
     <Compile Include="source\Data\Nodes\SheetNode.cs" />
@@ -161,6 +168,7 @@
     </Compile>
     <Compile Include="source\Numeration\NumerationVM.cs" />
     <Compile Include="source\Numeration\SSNumeration.cs" />
+    <Compile Include="source\Options\BatchOptions.cs" />
     <Compile Include="source\Options\SSOptions.cs" />
     <Compile Include="source\Options\SSOptionsView.xaml.cs">
       <DependentUpon>SSOptionsView.xaml</DependentUpon>
@@ -203,6 +211,10 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="source\Batch\BatchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="source\Numeration\NumerationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

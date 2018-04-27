@@ -7,9 +7,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using AcadLib.Errors;
 using Acad_SheetSet.Data.Nodes;
+using Acad_SheetSet.Options;
 using Acad_SheetSet.Props;
 using ACSMCOMPONENTS20Lib;
 using JetBrains.Annotations;
+using NetLib;
 using NetLib.Monad;
 using static Acad_SheetSet.Data.SheetSetExt;
 
@@ -17,12 +19,14 @@ namespace Acad_SheetSet.Data
 {
     public class SheetSet
     {
-        private readonly AcSmDatabase ssDb;
-        private AcSmSheetSet ss;
+        public readonly AcSmDatabase ssDb;
+        public readonly SSOptions options;
+        public AcSmSheetSet ss;
 
-        public SheetSet([NotNull] AcSmDatabase ssDb)
+        public SheetSet([NotNull] AcSmDatabase ssDb, SSOptions options)
         {
             this.ssDb = ssDb;
+            this.options = options;
             ss = ssDb.GetSheetSet();
             if (ss == null) throw new Exception("Пустая подшивка");
             Name = ss.GetName();
@@ -36,17 +40,17 @@ namespace Acad_SheetSet.Data
         public List<SSProp> Props { get; set; }
 
         [CanBeNull]
-        public static ISSNode GetNode([NotNull] IAcSmComponent item)
+        public ISSNode GetNode([NotNull] IAcSmComponent item)
         {
             ISSNode node = null;
             var typeName = item.GetTypeName();
             switch (typeName)
             {
                 case "AcSmSheet":
-                    node = new SheetNode((AcSmSheet) item);
+                    node = new SheetNode((AcSmSheet) item, this);
                     break;
                 case "AcSmSubset":
-                    node = new SubsetNode((AcSmSubset) item);
+                    node = new SubsetNode((AcSmSubset) item, this);
                     break;
             }
             return node;
@@ -61,10 +65,10 @@ namespace Acad_SheetSet.Data
                 var setCrossNumber = true;
                 if (!previewOnly)
                 {
-                    var propCrossNumber = ss.GetProperty(SheetNode.propCrossNumber);
+                    var propCrossNumber = ss.GetProperty(options.PropCrossNumberName);
                     if (propCrossNumber == null)
                     {
-                        Inspector.AddError($"В подшивке нет свойства '{SheetNode.propCrossNumber}' для сквозного номера.");
+                        Inspector.AddError($"В подшивке нет свойства '{options.PropCrossNumberName}' для сквозного номера.");
                         setCrossNumber = false;
                     }
                 }
@@ -114,14 +118,14 @@ namespace Acad_SheetSet.Data
         {
             using (new SSLock(ssDb))
             {
-                ss = ssDb.GetSheetSet();
-                ss.GetCustomProperties(true);
+                Update();
+                ss.GetCustomProperties(true, this);
                 if (props?.Any() == true)
                 {
                     var bag = ss.GetCustomPropertyBag();
                     foreach (var prop in props.AsEnumerable().Reverse())
                     {
-                        bag.AddCustomProperty(ss, prop);
+                        bag.AddCustomProperty(ss, prop, this);
                     }
                 }
                 Update();

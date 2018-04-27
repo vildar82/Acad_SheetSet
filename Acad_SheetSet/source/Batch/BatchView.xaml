@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Acad_SheetSet.Batch.BatchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Acad_SheetSet.Batch"
+             xmlns:nodes="clr-namespace:Acad_SheetSet.Batch.Nodes"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             d:DataContext="{d:DesignInstance local:BatchVM, IsDesignTimeCreatable=True}"
+             Name="uc"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type nodes:NodeLayout}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0" IsChecked="{Binding ToBatch}" Margin="1" ToolTip="Обрабатывать?"/>
+                <Border Grid.Column="1" Margin="1" Background="{Binding Color}" ToolTip="{Binding BatchResult}">
+                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </DataTemplate>
+        <HierarchicalDataTemplate ItemsSource="{Binding Nodes}" DataType="{x:Type nodes:NodeFile}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Foreground="Red" ToolTip="Файл не найден"
+                        mah:VisibilityHelper.IsHidden="{Binding IsExist}"
+                        Command="{Binding DataContext.CheckExistFile, ElementName=uc}"
+                        CommandParameter="{Binding}">
+                    <iconPacks:Material Kind="Refresh" />
+                </Button>
+                <CheckBox Grid.Column="1" IsChecked="{Binding ToBatch}" Margin="1" ToolTip="Обрабатывать?"/>
+                <Border Grid.Column="2" Margin="1" Background="{Binding Color}" ToolTip="{Binding BatchResult}">
+                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <WrapPanel Grid.Row="0">
+                    <TextBlock Text="Обрабатываемый файлы и листы подшивки:" />
+                    <ToggleButton IsChecked="{Binding IsBatchFiles}" Content="{iconPacks:Material FileMultiple}"
+                            ToolTip="Обрабатываь файлы?" Margin="1" />
+                    <ToggleButton IsChecked="{Binding IsBatchLayouts}" Content="{iconPacks:Material Layers}"
+                            ToolTip="Обрабатывать листы?" Margin="1" />
+                </WrapPanel>
+                <TreeView Grid.Row="1" ItemsSource="{Binding Nodes}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded"
+                                    Value="{Binding DataContext.ExpandTreeView, ElementName=uc, UpdateSourceTrigger=PropertyChanged}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </Grid>
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Команда исполнения для файлов:" />
+                    <TextBox Grid.Row="1" Text="{Binding Options.FileExecute}" />
+                </Grid>
+                <Grid Grid.Column="1" Margin="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Команда исполнения для листов:" />
+                    <TextBox Grid.Row="1" Text="{Binding Options.LayoutExecute}" />
+                </Grid>
+            </Grid>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button Command="{Binding Model.Update}" Margin="10,1,10,1" Content="{iconPacks:Material Refresh}"
+                        ToolTip="Обновить подшивку" />
+                <Button Content="Обработать" Margin="2" Command="{Binding Batch}"
+                        ToolTip="Удаление текущих пользовательских свойств подшивки и создание новых" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

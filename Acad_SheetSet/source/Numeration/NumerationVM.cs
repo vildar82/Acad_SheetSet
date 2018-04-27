@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using AcadLib.Errors;
+using Acad_SheetSet.Batch;
 using Acad_SheetSet.Data;
 using Acad_SheetSet.Data.Nodes;
 using Acad_SheetSet.Options;
@@ -19,8 +19,6 @@ namespace Acad_SheetSet.Numeration
 {
     public class NumerationVM : BaseViewModel
     {
-        public bool ExpandTreeView { get; set; } = true;
-
         public NumerationVM()
         {
             Options = new SSOptionsVM();
@@ -30,8 +28,10 @@ namespace Acad_SheetSet.Numeration
             Collapse = CreateCommand(() => ExpandTreeView = false);
             Expand = CreateCommand(() => ExpandTreeView = true);
             PropsVM = new PropsVM(this);
+            BatchVM = new BatchVM(this);
         }
 
+        public bool ExpandTreeView { get; set; } = true;
         public bool IsSelected { get; set; }
         public SSOptionsVM Options { get; set; }
 
@@ -49,6 +49,12 @@ namespace Acad_SheetSet.Numeration
         public bool IsBimUser { get; set; } = AcadLib.General.IsBimUser;
 
         public PropsVM PropsVM { get; set; }
+        public BatchVM BatchVM { get; set; }
+
+        public override void OnClosed()
+        {
+            Options.Save();
+        }
 
         public override void OnInitialize()
         {
@@ -78,6 +84,7 @@ namespace Acad_SheetSet.Numeration
             ss.Numeration(previewOnly);
             Nodes = ss.Nodes;
             PropsVM.SSProps = ss.Props;
+            BatchVM.Update();
             Inspector.Show();
         }
     }

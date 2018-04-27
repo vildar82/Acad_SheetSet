@@ -10,6 +10,13 @@ namespace Acad_SheetSet.Data.Nodes
 {
     public abstract class BaseNode : BaseModel, ISSNode
     {
+        protected readonly SheetSet ss;
+
+        protected BaseNode(SheetSet ss)
+        {
+            this.ss = ss;
+        }
+
         public string Name { get; set; }
         public ObservableCollection<ISSNode> Nodes { get; set; } = new ObservableCollection<ISSNode>();
 
@@ -17,13 +24,8 @@ namespace Acad_SheetSet.Data.Nodes
         public List<SheetNode> GetSheets()
         {
             var sheets = new List<SheetNode>();
-            if (this is SheetNode sheet)
-                sheets.Add(sheet);
-            else
-            {
-                foreach (var node in Nodes)
-                    sheets.AddRange(node.GetSheets());
-            }
+            if (this is SheetNode sheet) sheets.Add(sheet);
+            else foreach (var node in Nodes) sheets.AddRange(node.GetSheets());
             return sheets;
         }
 
