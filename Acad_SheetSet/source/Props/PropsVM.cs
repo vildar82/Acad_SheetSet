@@ -52,7 +52,7 @@ namespace Acad_SheetSet.Props
             }
             catch (Exception ex)
             {
-                Logger.Log.Error(ex, $"Acad_SheetSet UpdateCsv - {CsvFile}");
+                AcadLib.Logger.Log.Error(ex, $"Acad_SheetSet UpdateCsv - {CsvFile}");
                 ShowMessage(ex.Message);
             }
         }
