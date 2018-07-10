@@ -8,7 +8,7 @@ using Acad_SheetSet.Numeration;
 #if v2016
 using ACSMCOMPONENTS20Lib;
 #elif v2017
-using ACSMCOMPONENTS21Lib;
+using acsmcomponents21;
 #elif v2018
 using ACSMCOMPONENTS22Lib;
 #endif
@@ -24,7 +24,7 @@ namespace Acad_SheetSet.Select
     public class SSSelect : BaseModel
     {
         private readonly NumerationVM model;
-        private AcSmSheetSetMgr mgr;
+        private dynamic mgr;
 
         public SSSelect(NumerationVM model) : base(model)
         {
@@ -44,7 +44,8 @@ namespace Acad_SheetSet.Select
         [NotNull]
         private IEnumerable<SheetSet> GetSheetSets()
         {
-            return SsToList(mgr.GetDatabaseEnumerator(), e => e.Next()).SelectTry(s => new SheetSet(s,model.Options.Options));
+            return SsToList((IAcSmEnumDatabase)mgr.GetDatabaseEnumerator(), e => e.Next())
+                .SelectTry(s => new SheetSet(s, model.Options.Options));
         }
 
         private void SelectFileExec()

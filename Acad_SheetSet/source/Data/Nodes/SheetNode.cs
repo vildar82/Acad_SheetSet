@@ -5,7 +5,7 @@ using System;
 #if v2016
 using ACSMCOMPONENTS20Lib;
 #elif v2017
-using ACSMCOMPONENTS21Lib;
+using acsmcomponents21;
 #elif v2018
 using ACSMCOMPONENTS22Lib;
 #endif
@@ -28,7 +28,7 @@ namespace Acad_SheetSet.Data.Nodes
                 .Subscribe(s => HasNewNumber = NumberNew != null && NumberNew != Number);
             this.WhenAnyValue(v => v.CrossNumberNew)
                 .Subscribe(s => HasNewCrossNumber = CrossNumberNew != null && CrossNumberNew != CrossNumber);
-            var layout = sheet.GetLayout();
+            dynamic layout = sheet.GetLayout();
             Layout = layout.GetName();
             File = layout.GetFileName();
         }

@@ -12,7 +12,7 @@ using Acad_SheetSet.Props;
 #if v2016
 using ACSMCOMPONENTS20Lib;
 #elif v2017
-using ACSMCOMPONENTS21Lib;
+using acsmcomponents21;
 #elif v2018
 using ACSMCOMPONENTS22Lib;
 #endif
