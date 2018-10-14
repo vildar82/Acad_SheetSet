@@ -1,7 +1,4 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 14:55
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Acad_SheetSet.Data;
 using Acad_SheetSet.Numeration;
@@ -21,6 +18,8 @@ using static Acad_SheetSet.Data.SheetSetExt;
 
 namespace Acad_SheetSet.Select
 {
+    using ReactiveUI.Legacy;
+
     public class SSSelect : BaseModel
     {
         private readonly NumerationVM model;
