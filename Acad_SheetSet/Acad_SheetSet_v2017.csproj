@@ -30,24 +30,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\Autodesk\AutoCAD\Pik\Settings\Script\NET\</OutputPath>
+    <OutputPath>..\..\..\..\Autodesk\AutoCAD\Pik\Settings\Script\NET\SheetSet\</OutputPath>
     <DefineConstants>TRACE;v2017</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>    
-    <Reference Include="acsmcomponents21, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\ObjectARX\ObjectARX2017\acsmcomponents21.dll</HintPath>
-    </Reference>    
-    <Reference Include="axdb21, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\ObjectARX\ObjectARX2017\axdb21.dll</HintPath>
-    </Reference>    
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -124,8 +114,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup> 
+  </ItemGroup>
   <ItemGroup>
+    <COMReference Include="ACSMCOMPONENTS21Lib">
+      <Guid>{AA0F32F6-E7D0-44C3-BF90-2C2CC3220C1F}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
     <COMReference Include="AXDBLib">
       <Guid>{AE7B2C8A-2E97-4406-8160-E8D32EB0B56D}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -133,12 +132,12 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AcadLib" version="1.0.0"/>
-    <PackageReference Include="NetLib" version="1.1.13"/>
+    <PackageReference Include="AcadLib" version="1.0.0" ExcludeAssets="runtime;build" />
+    <PackageReference Include="NetLib" version="1.1.13" ExcludeAssets="runtime;build" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

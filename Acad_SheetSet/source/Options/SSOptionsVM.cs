@@ -1,9 +1,9 @@
-﻿using NetLib;
-using NetLib.WPF;
-using Path = AcadLib.IO.Path;
-
-namespace Acad_SheetSet.Options
+﻿namespace Acad_SheetSet.Options
 {
+    using NetLib;
+    using NetLib.WPF;
+    using Path = AcadLib.IO.Path;
+
     public class SSOptionsVM : BaseViewModel
     {
         private FileData<SSOptions> data;
@@ -21,6 +21,7 @@ namespace Acad_SheetSet.Options
                     PropCrossNumberName = "СквознойНомер"
                 };
             }
+
             Options = data.Data;
         }
 

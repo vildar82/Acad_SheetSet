@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using AcadLib;
-using Acad_SheetSet.Batch.Nodes;
-using Acad_SheetSet.Numeration;
-using Acad_SheetSet.Options;
-using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
-using JetBrains.Annotations;
-using NetLib.Monad;
-using NetLib.WPF;
-using ReactiveUI;
-using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
-
-namespace Acad_SheetSet.Batch
+﻿namespace Acad_SheetSet.Batch
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Windows.Media;
+    using AcadLib;
+    using Autodesk.AutoCAD.ApplicationServices;
+    using Autodesk.AutoCAD.DatabaseServices;
+    using JetBrains.Annotations;
+    using NetLib.Monad;
+    using NetLib.WPF;
+    using Nodes;
+    using Numeration;
+    using Options;
+    using ReactiveUI;
+    using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
+    using Commands = Acad_SheetSet.Commands;
+
     public class BatchVM : BaseModel
     {
         private static BatchVM batchVm;
@@ -25,7 +25,8 @@ namespace Acad_SheetSet.Batch
         private static Brush okColor = new SolidColorBrush(Colors.LightGreen);
         private static Brush errColor = new SolidColorBrush(Colors.Red);
 
-        public BatchVM([NotNull] NumerationVM model) : base (model)
+        public BatchVM([NotNull] NumerationVM model)
+            : base (model)
         {
             Model = model;
             Batch = CreateCommand(BatchExec);
@@ -34,19 +35,23 @@ namespace Acad_SheetSet.Batch
             {
                 model.Options.Options.Batch = new BatchOptions();
             }
+
             Options = model.Options.Options.Batch;
             batchVm = this;
         }
 
         public NumerationVM Model { get; }
+
         public bool ExpandTreeView { get; set; } = true;
 
         public List<NodeFile> Nodes { get; set; } = new List<NodeFile>();
 
         public BatchOptions Options { get; set; }
+
         public ReactiveCommand Batch { get; set; }
 
         public bool IsBatchFiles { get; set; } = true;
+
         public bool IsBatchLayouts { get; set; } = true;
 
         public ReactiveCommand CheckExistFile { get; set; }
@@ -60,7 +65,11 @@ namespace Acad_SheetSet.Batch
         {
             var oldNodes = Nodes.ToList();
             Nodes = new List<NodeFile>();
-            if (Model.Select?.SheetSet == null) return;
+            if (Model.Select?.SheetSet == null)
+            {
+                return;
+            }
+
             var nodes = new List<NodeFile>();
             NodeFile parentFile = null;
             var sheets = Model.Select.SheetSet.Nodes.SelectMany(s => s.GetSheets()).ToList();
@@ -80,8 +89,10 @@ namespace Acad_SheetSet.Batch
                 {
                     parentFile.NextFile = nodeFile;
                 }
+
                 parentFile = nodeFile;
             }
+
             SetToBatch(nodes.ToList<NodeBase>(), oldNodes.ToList<NodeBase>());
             Nodes = nodes;
         }
@@ -104,39 +115,19 @@ namespace Acad_SheetSet.Batch
 
         private void BatchExec()
         {
-            if (!Nodes.Any()) return;
+            if (!Nodes.Any())
+            {
+                return;
+            }
+
             if (!IsBatchFiles && !IsBatchLayouts)
             {
                 ShowMessage("Отключена обработка файлов и листов.");
                 return;
             }
+
             Execute(AcadHelper.Doc, nameof(Commands._InternalUse_SSBatchSession) + " ");
         }
-
-        //private void BatchFile([CanBeNull] NodeFile nodeFile)
-        //{
-        //    if (internalFile != null && internalFile.NeedCloseFile)
-        //    {
-        //        var adoc = AcadHelper.Doc;
-        //        adoc.Try(d => d.CloseAndDiscard());
-        //    }
-
-        //    if (nodeFile == null)
-        //    {
-        //        internalFile = null;
-        //        return;
-        //    }
-        //    internalFile = nodeFile;
-        //    nodeFile.NeedCloseFile = false;
-        //    var doc = AcadHelper.GetOpenedDocument(nodeFile.Name);
-        //    if (doc == null)
-        //    {
-        //        nodeFile.NeedCloseFile = true;
-        //        doc = Application.DocumentManager.Open(nodeFile.Name);
-        //        Application.DocumentManager.MdiActiveDocument = doc;
-        //    }
-        //    Execute(doc, nameof(Commands._InternalUse_SSBatchModal) + " ");
-        //}
 
         private static void BatchLayout([NotNull] Document doc, [NotNull] NodeLayout nodeLayout)
         {
@@ -156,16 +147,24 @@ namespace Acad_SheetSet.Batch
 
         public static void InternalBatchModal([NotNull] Document doc)
         {
-            if (internalFile == null) return;
+            if (internalFile == null)
+            {
+                return;
+            }
+
             try
             {
                 if (batchVm.IsBatchFiles)
                 {
                     if (!doc.Database.TileMode)
+                    {
                         doc.Database.TileMode = true;
+                    }
+
                     Command(doc, batchVm.Options.FileExecute);
                     internalFile.Color = okColor;
                 }
+
                 if (batchVm.IsBatchLayouts)
                 {
                     foreach (var nodeLayout in internalFile.Nodes.Where(w => w.ToBatch))
@@ -183,6 +182,7 @@ namespace Acad_SheetSet.Batch
                         }
                     }
                 }
+
                 doc.Database.SaveAs(internalFile.Name, DwgVersion.Current);
             }
             catch (Exception ex)
@@ -201,7 +201,10 @@ namespace Acad_SheetSet.Batch
             if (internalFile == null)
             {
                 internalFile = batchVm?.Nodes?.First();
-                if (internalFile == null) return;
+                if (internalFile == null)
+                {
+                    return;
+                }
             }
             else
             {
@@ -210,10 +213,16 @@ namespace Acad_SheetSet.Batch
                     var adoc = AcadHelper.Doc;
                     adoc.Try(d => d.CloseAndDiscard());
                 }
+
                 internalFile = internalFile.NextFile;
-                if (internalFile == null) return;
-                internalFile.NeedCloseFile = false;   
+                if (internalFile == null)
+                {
+                    return;
+                }
+
+                internalFile.NeedCloseFile = false;
             }
+
             internalFile.BatchResult = null;
             internalFile.Color = null;
             var doc = AcadHelper.GetOpenedDocument(internalFile.Name);
@@ -223,6 +232,7 @@ namespace Acad_SheetSet.Batch
                 doc = Application.DocumentManager.Open(internalFile.Name);
                 Application.DocumentManager.MdiActiveDocument = doc;
             }
+
             Execute(doc, nameof(Commands._InternalUse_SSBatchModal) + " ");
         }
     }

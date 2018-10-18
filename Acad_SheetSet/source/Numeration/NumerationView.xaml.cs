@@ -8,7 +8,8 @@ namespace Acad_SheetSet.Numeration
     /// </summary>
     public partial class NumerationView
     {
-        public NumerationView(NumerationVM vm) : base(vm)
+        public NumerationView(NumerationVM vm)
+            : base(vm)
         {
             InitializeComponent();
         }

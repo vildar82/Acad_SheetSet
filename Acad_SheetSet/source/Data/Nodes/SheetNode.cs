@@ -1,24 +1,22 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 16:37
-
-using System;
-#if v2016
-using ACSMCOMPONENTS20Lib;
-#elif v2017
-using acsmcomponents21;
-#elif v2018
-using ACSMCOMPONENTS22Lib;
-#endif
-using JetBrains.Annotations;
-using ReactiveUI;
-
-namespace Acad_SheetSet.Data.Nodes
+﻿namespace Acad_SheetSet.Data.Nodes
 {
+    using System;
+#if v2016
+    using ACSMCOMPONENTS20Lib;
+#elif v2017
+    using ACSMCOMPONENTS21Lib;
+#elif v2018
+    using ACSMCOMPONENTS22Lib;
+#endif
+    using JetBrains.Annotations;
+    using ReactiveUI;
+
     public class SheetNode : BaseNode
     {
         [NotNull] public readonly AcSmSheet sheet;
 
-        public SheetNode([NotNull] AcSmSheet sheet, [NotNull] SheetSet ss) : base(ss)
+        public SheetNode([NotNull] AcSmSheet sheet, [NotNull] SheetSet ss)
+            : base(ss)
         {
             this.sheet = sheet;
             Name = sheet.GetTitle();
@@ -34,6 +32,7 @@ namespace Acad_SheetSet.Data.Nodes
         }
 
         public string Layout { get; set; }
+
         public string File { get; set; }
         /// <summary>
         ///     Сквозной номер

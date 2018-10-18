@@ -1,18 +1,15 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 16:26
-
-using System;
-#if v2016
-using ACSMCOMPONENTS20Lib;
-#elif v2017
-using acsmcomponents21;
-#elif v2018
-using ACSMCOMPONENTS22Lib;
-#endif
-using JetBrains.Annotations;
-
-namespace Acad_SheetSet.Data
+﻿namespace Acad_SheetSet.Data
 {
+    using System;
+#if v2016
+    using ACSMCOMPONENTS20Lib;
+#elif v2017
+    using ACSMCOMPONENTS21Lib;
+#elif v2018
+    using ACSMCOMPONENTS22Lib;
+#endif
+    using JetBrains.Annotations;
+
     public class SSLock : IDisposable
     {
         private readonly AcSmDatabase ssDb;

@@ -1,10 +1,7 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 14:45
-
-using System.Diagnostics;
-using AcadLib;
+﻿using System.Diagnostics;
 using Acad_SheetSet.Batch;
 using Acad_SheetSet.Numeration;
+using AcadLib;
 using Autodesk.AutoCAD.Runtime;
 using Commands = Acad_SheetSet.Commands;
 
@@ -18,7 +15,8 @@ namespace Acad_SheetSet
 
         static Commands()
         {
-#if DEBUG // Отключение отладочных сообщений биндинга (тормозит сильно)
+#if DEBUG
+            // Отключение отладочных сообщений биндинга (тормозит сильно)
             PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Off;
 #endif
         }

@@ -1,31 +1,31 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Acad_SheetSet.Data;
-using Acad_SheetSet.Numeration;
-#if v2016
-using ACSMCOMPONENTS20Lib;
-#elif v2017
-using acsmcomponents21;
-#elif v2018
-using ACSMCOMPONENTS22Lib;
-#endif
-using JetBrains.Annotations;
-using Microsoft.Win32;
-using NetLib;
-using NetLib.WPF;
-using ReactiveUI;
-using static Acad_SheetSet.Data.SheetSetExt;
-
-namespace Acad_SheetSet.Select
+﻿namespace Acad_SheetSet.Select
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Data;
+    using JetBrains.Annotations;
+    using Microsoft.Win32;
+    using NetLib;
+    using NetLib.WPF;
+    using Numeration;
+    using ReactiveUI;
     using ReactiveUI.Legacy;
+    using static Data.SheetSetExt;
+#if v2016
+    using ACSMCOMPONENTS20Lib;
+#elif v2017
+    using ACSMCOMPONENTS21Lib;
+#elif v2018
+    using ACSMCOMPONENTS22Lib;
+#endif
 
     public class SSSelect : BaseModel
     {
         private readonly NumerationVM model;
         private dynamic mgr;
 
-        public SSSelect(NumerationVM model) : base(model)
+        public SSSelect(NumerationVM model)
+            : base(model)
         {
             this.model = model;
             mgr = new AcSmSheetSetMgr();
@@ -67,6 +67,7 @@ namespace Acad_SheetSet.Select
                 {
                     //
                 }
+
                 if (ssDb != null)
                     SheetSet = SheetSets.FirstOrDefault(s => s.File.EqualsIgnoreCase(dialog.FileName));
                 else

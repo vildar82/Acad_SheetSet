@@ -1,11 +1,13 @@
-﻿using System.ComponentModel;
-
-namespace Acad_SheetSet.Props
+﻿namespace Acad_SheetSet.Props
 {
+    using System.ComponentModel;
+
     public class SSProp
     {
         public string Name { get; set; }
+
         public string Value { get; set; }
+
         public PropType Type { get; set; }
     }
 

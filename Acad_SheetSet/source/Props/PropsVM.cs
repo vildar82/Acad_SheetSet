@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using AcadLib;
-using Acad_SheetSet.Numeration;
-using CsvHelper;
-using NetLib;
-using NetLib.WPF;
-using ReactiveUI;
-
-namespace Acad_SheetSet.Props
+﻿namespace Acad_SheetSet.Props
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using Numeration;
+    using CsvHelper;
+    using NetLib;
+    using NetLib.WPF;
+    using ReactiveUI;
+
     public class PropsVM : BaseModel
     {
-        public PropsVM(NumerationVM model) : base (model)
+        public PropsVM(NumerationVM model)
+            : base (model)
         {
             Model = model;
             Create = CreateCommand(CreateExec);
@@ -25,6 +25,7 @@ namespace Acad_SheetSet.Props
         public string CsvFile { get; set; }
 
         public List<SSProp> SSProps { get; set; }
+
         public List<SSProp> CsvProps { get; set; }
 
         public ReactiveCommand Create { get; set; }
@@ -42,7 +43,11 @@ namespace Acad_SheetSet.Props
             try
             {
                 CsvProps = new List<SSProp>();
-                if (CsvFile.IsNullOrEmpty()) return;
+                if (CsvFile.IsNullOrEmpty())
+                {
+                    return;
+                }
+
                 using (var textReader = File.OpenText(CsvFile))
                 {
                     var csv = new CsvReader(textReader);

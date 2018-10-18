@@ -1,22 +1,19 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 15:14
-
-using System;
-using System.Collections.ObjectModel;
-using AcadLib.Errors;
-using Acad_SheetSet.Batch;
-using Acad_SheetSet.Data;
-using Acad_SheetSet.Data.Nodes;
-using Acad_SheetSet.Options;
-using Acad_SheetSet.Props;
-using Acad_SheetSet.Select;
-using JetBrains.Annotations;
-using MahApps.Metro.IconPacks;
-using NetLib.WPF;
-using ReactiveUI;
-
-namespace Acad_SheetSet.Numeration
+﻿namespace Acad_SheetSet.Numeration
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using Batch;
+    using Data;
+    using Data.Nodes;
+    using Options;
+    using Props;
+    using Select;
+    using AcadLib.Errors;
+    using JetBrains.Annotations;
+    using MahApps.Metro.IconPacks;
+    using NetLib.WPF;
+    using ReactiveUI;
+
     public class NumerationVM : BaseViewModel
     {
         public NumerationVM()
@@ -32,7 +29,9 @@ namespace Acad_SheetSet.Numeration
         }
 
         public bool ExpandTreeView { get; set; } = true;
+
         public bool IsSelected { get; set; }
+
         public SSOptionsVM Options { get; set; }
 
         public ReactiveCommand Collapse { get; set; }
@@ -46,11 +45,13 @@ namespace Acad_SheetSet.Numeration
         public bool HasCrossNumProp { get; set; }
 
         public SSSelect Select { get; set; }
+
         public ReactiveCommand Update { get; set; }
 
         public bool IsBimUser { get; set; } = AcadLib.General.IsBimUser;
 
         public PropsVM PropsVM { get; set; }
+
         public BatchVM BatchVM { get; set; }
 
         public override void OnClosed()
@@ -82,7 +83,11 @@ namespace Acad_SheetSet.Numeration
         public void UpdateExec([CanBeNull] SheetSet ss, bool previewOnly)
         {
             Nodes = new ObservableCollection<ISSNode>();
-            if (ss == null) return;
+            if (ss == null)
+            {
+                return;
+            }
+
             ss.Numeration(previewOnly);
             Nodes = ss.Nodes;
             PropsVM.SSProps = ss.Props;

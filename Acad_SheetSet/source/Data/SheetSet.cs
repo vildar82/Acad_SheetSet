@@ -1,27 +1,24 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 15:10
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using AcadLib.Errors;
-using Acad_SheetSet.Data.Nodes;
-using Acad_SheetSet.Options;
-using Acad_SheetSet.Props;
-#if v2016
-using ACSMCOMPONENTS20Lib;
-#elif v2017
-using acsmcomponents21;
-#elif v2018
-using ACSMCOMPONENTS22Lib;
-#endif
-using JetBrains.Annotations;
-using NetLib.Monad;
-using static Acad_SheetSet.Data.SheetSetExt;
-
-namespace Acad_SheetSet.Data
+﻿namespace Acad_SheetSet.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using AcadLib.Errors;
+    using JetBrains.Annotations;
+    using NetLib.Monad;
+    using Nodes;
+    using Options;
+    using Props;
+    using static SheetSetExt;
+#if v2016
+    using ACSMCOMPONENTS20Lib;
+#elif v2017
+    using ACSMCOMPONENTS21Lib;
+#elif v2018
+    using ACSMCOMPONENTS22Lib;
+#endif
+
     public class SheetSet
     {
         public readonly AcSmDatabase ssDb;
@@ -33,7 +30,11 @@ namespace Acad_SheetSet.Data
             this.ssDb = ssDb;
             this.options = options;
             ss = ssDb.GetSheetSet();
-            if (ss == null) throw new Exception("Пустая подшивка");
+            if (ss == null)
+            {
+                throw new Exception("Пустая подшивка");
+            }
+
             Name = ss.GetName();
             File = ssDb.GetFileName();
         }
@@ -41,7 +42,9 @@ namespace Acad_SheetSet.Data
         public string File { get; set; }
 
         public string Name { get; set; }
+
         public ObservableCollection<ISSNode> Nodes { get; set; }
+
         public List<SSProp> Props { get; set; }
 
         [CanBeNull]
@@ -58,6 +61,7 @@ namespace Acad_SheetSet.Data
                     node = new SubsetNode((AcSmSubset) item, this);
                     break;
             }
+
             return node;
         }
 
@@ -74,6 +78,7 @@ namespace Acad_SheetSet.Data
                     Inspector.AddError($"В подшивке нет свойства '{options.PropCrossNumberName}' для сквозного номера.");
                     setCrossNumber = false;
                 }
+
                 foreach (var node in Nodes)
                 {
                     var number = 1;
@@ -93,11 +98,16 @@ namespace Acad_SheetSet.Data
                                         $"Ошибка записи сквозного номера '{s.Name}'={s.CrossNumberNew} - {e.Message}"));
                             }
                         }
+
                         number++;
                         crossNumber++;
                     }
                 }
-                if (!previewOnly) Update();
+
+                if (!previewOnly)
+                {
+                    Update();
+                }
             }
         }
 
@@ -105,7 +115,11 @@ namespace Acad_SheetSet.Data
         {
             var nodes = new ObservableCollection<ISSNode>();
             ss = ssDb.GetSheetSet();
-            foreach (var item in SsToList(ss.GetSheetEnumerator(), e => e.Next())) nodes.Add(GetNode(item));
+            foreach (var item in SsToList(ss.GetSheetEnumerator(), e => e.Next()))
+            {
+                nodes.Add(GetNode(item));
+            }
+
             Props = GetProps();
             Nodes = nodes;
         }
@@ -130,6 +144,7 @@ namespace Acad_SheetSet.Data
                         bag.AddCustomProperty(ss, prop, this);
                     }
                 }
+
                 Update();
             }
         }

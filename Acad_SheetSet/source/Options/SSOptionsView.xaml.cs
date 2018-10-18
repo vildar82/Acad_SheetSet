@@ -5,7 +5,8 @@
     /// </summary>
     public partial class SSOptionsView
     {
-        public SSOptionsView(SSOptionsVM vm) : base (vm)
+        public SSOptionsView(SSOptionsVM vm)
+            : base (vm)
         {
             InitializeComponent();
         }

@@ -1,21 +1,18 @@
-﻿// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 15:29
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Acad_SheetSet.Props;
-#if v2016
-using ACSMCOMPONENTS20Lib;
-#elif v2017
-using acsmcomponents21;
-#elif v2018
-using ACSMCOMPONENTS22Lib;
-#endif
-using JetBrains.Annotations;
-
-namespace Acad_SheetSet.Data
+﻿namespace Acad_SheetSet.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Props;
+#if v2016
+    using ACSMCOMPONENTS20Lib;
+#elif v2017
+    using ACSMCOMPONENTS21Lib;
+#elif v2018
+    using ACSMCOMPONENTS22Lib;
+#endif
+    using JetBrains.Annotations;
+
     public static class SheetSetExt
     {
         [CanBeNull]
@@ -34,7 +31,11 @@ namespace Acad_SheetSet.Data
         public static void SetCustomPropertyValue([NotNull] this IAcSmComponent comp, [NotNull] string propName, object value)
         {
             var prop = comp.GetProperty(propName);
-            if (prop == null) throw new KeyNotFoundException($"Не найден параметр '{propName}'");
+            if (prop == null)
+            {
+                throw new KeyNotFoundException($"Не найден параметр '{propName}'");
+            }
+
             prop.SetValue(value);
         }
 
@@ -43,7 +44,11 @@ namespace Acad_SheetSet.Data
             while (true)
             {
                 var item = next(enumerator);
-                if (item == null) break;
+                if (item == null)
+                {
+                    break;
+                }
+
                 yield return item;
             }
         }
@@ -66,7 +71,11 @@ namespace Acad_SheetSet.Data
                 var cpbItem = cpbList[i];
                 var propName = cpbPropNames[i];
                 var flags = cpbItem.GetFlags();
-                if (flags != PropertyFlags.CUSTOM_SHEETSET_PROP && flags != PropertyFlags.CUSTOM_SHEET_PROP) continue;
+                if (flags != PropertyFlags.CUSTOM_SHEETSET_PROP && flags != PropertyFlags.CUSTOM_SHEET_PROP)
+                {
+                    continue;
+                }
+
                 var value = cpbItem.GetValue()?.ToString();
                 var prop = new SSProp
                 {
@@ -93,9 +102,11 @@ namespace Acad_SheetSet.Data
                             }
                         }
                     }
+
                     cpb.SetProperty(propName,null);
                 }
             }
+
             return props;
         }
 
@@ -103,7 +114,8 @@ namespace Acad_SheetSet.Data
         {
             return flags == PropertyFlags.CUSTOM_SHEET_PROP ? PropType.Sheet : PropType.SheetSet;
         }
-        private static PropertyFlags  GetPropType(PropType flags)
+
+        private static PropertyFlags GetPropType(PropType flags)
         {
             return flags == PropType.SheetSet ? PropertyFlags.CUSTOM_SHEETSET_PROP : PropertyFlags.CUSTOM_SHEET_PROP;
         }
