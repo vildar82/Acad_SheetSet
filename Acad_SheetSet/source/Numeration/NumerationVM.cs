@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Reactive;
     using Batch;
     using Data;
     using Data.Nodes;
@@ -34,19 +35,19 @@
 
         public SSOptionsVM Options { get; set; }
 
-        public ReactiveCommand Collapse { get; set; }
+        public ReactiveCommand<Unit, Unit> Collapse { get; set; }
 
-        public ReactiveCommand Expand { get; set; }
+        public ReactiveCommand<Unit, Unit> Expand { get; set; }
 
         public ObservableCollection<ISSNode> Nodes { get; set; }
 
-        public ReactiveCommand Numeration { get; set; }
+        public ReactiveCommand<Unit, Unit> Numeration { get; set; }
 
         public bool HasCrossNumProp { get; set; }
 
         public SSSelect Select { get; set; }
 
-        public ReactiveCommand Update { get; set; }
+        public ReactiveCommand<Unit, Unit> Update { get; set; }
 
         public bool IsBimUser { get; set; } = AcadLib.General.IsBimUser;
 

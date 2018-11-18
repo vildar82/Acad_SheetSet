@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reactive;
     using Data;
     using JetBrains.Annotations;
     using Microsoft.Win32;
@@ -34,7 +35,7 @@
             SelectFile = CreateCommand(SelectFileExec);
         }
 
-        public ReactiveCommand SelectFile { get; set; }
+        public ReactiveCommand<Unit, Unit> SelectFile { get; set; }
 
         public SheetSet SheetSet { get; set; }
 

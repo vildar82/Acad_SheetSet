@@ -17,6 +17,7 @@
     using ReactiveUI;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
     using Commands = Acad_SheetSet.Commands;
+    using Unit = System.Reactive.Unit;
 
     public class BatchVM : BaseModel
     {
@@ -48,13 +49,13 @@
 
         public BatchOptions Options { get; set; }
 
-        public ReactiveCommand Batch { get; set; }
+        public ReactiveCommand<Unit, Unit> Batch { get; set; }
 
         public bool IsBatchFiles { get; set; } = true;
 
         public bool IsBatchLayouts { get; set; } = true;
 
-        public ReactiveCommand CheckExistFile { get; set; }
+        public ReactiveCommand<NodeFile, Unit> CheckExistFile { get; set; }
 
         private void CheckExistFileExec([NotNull] NodeFile nodeFile)
         {

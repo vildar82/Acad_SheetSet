@@ -4,10 +4,11 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Numeration;
+    using System.Reactive;
     using CsvHelper;
     using NetLib;
     using NetLib.WPF;
+    using Numeration;
     using ReactiveUI;
 
     public class PropsVM : BaseModel
@@ -28,7 +29,7 @@
 
         public List<SSProp> CsvProps { get; set; }
 
-        public ReactiveCommand Create { get; set; }
+        public ReactiveCommand<Unit, Unit> Create { get; set; }
 
         private void CreateExec()
         {

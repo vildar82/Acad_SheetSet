@@ -136,8 +136,11 @@
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="AcadLib" version="1.0.0"/>      
-		<PackageReference Include="NetLib" version="1.1.13"/>      
+		<PackageReference Include="AcadLib" Version="1.1.38" />      
+		<PackageReference Include="NetLib" Version="1.1.67" />      
+		<PackageReference Update="Nerdbank.GitVersioning" Version="2.2.33" />      
+		<PackageReference Update="Fody" Version="3.3.0" />      
+		<PackageReference Update="PropertyChanged.Fody" Version="2.5.14" />      
 	</ItemGroup>  
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
