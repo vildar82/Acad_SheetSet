@@ -4,12 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using Props;
-#if v2016
-    using ACSMCOMPONENTS20Lib;
-#elif v2017
+#if v2017
     using ACSMCOMPONENTS21Lib;
-#elif v2018
-    using ACSMCOMPONENTS22Lib;
+#elif v2019
+    using ACSMCOMPONENTS23Lib;
 #endif
     using JetBrains.Annotations;
 
@@ -54,7 +52,7 @@
         }
 
         [NotNull]
-        public static List<SSProp> GetCustomProperties([NotNull] this IAcSmComponent comp, bool removeProps = false, 
+        public static List<SSProp> GetCustomProperties([NotNull] this IAcSmComponent comp, bool removeProps = false,
             [CanBeNull] SheetSet ss = null)
         {
             var cpb = comp.GetCustomPropertyBag();

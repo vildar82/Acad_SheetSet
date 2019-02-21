@@ -16,7 +16,7 @@
     using Options;
     using ReactiveUI;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
-    using Commands = Acad_SheetSet.Commands;
+    using Commands = Commands;
     using Unit = System.Reactive.Unit;
 
     public class BatchVM : BaseModel

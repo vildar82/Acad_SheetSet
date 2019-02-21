@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet_v2016", "Acad_SheetSet\Acad_SheetSet_v2016.csproj", "{00D1461E-F693-43B8-BC2E-EA1119F0497B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet_v2017", "Acad_SheetSet\Acad_SheetSet_v2017.csproj", "{F82560E5-BADA-4EB3-88DC-E4044ABC6FDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet_v2018", "Acad_SheetSet\Acad_SheetSet_v2018.csproj", "{F9D8D962-5474-420E-80CC-9D9F6B10A20D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acad_SheetSet_v2019", "Acad_SheetSet\Acad_SheetSet_v2019.csproj", "{F9D8D962-5474-420E-80CC-9D9F6B10A20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00D1461E-F693-43B8-BC2E-EA1119F0497B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F82560E5-BADA-4EB3-88DC-E4044ABC6FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F82560E5-BADA-4EB3-88DC-E4044ABC6FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F82560E5-BADA-4EB3-88DC-E4044ABC6FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
