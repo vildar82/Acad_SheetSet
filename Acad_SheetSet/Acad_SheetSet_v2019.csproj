@@ -10,12 +10,12 @@
     <RootNamespace>Acad_SheetSet</RootNamespace>
     <AssemblyName>Acad_SheetSet_v2019</AssemblyName>
     <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,8 +25,6 @@
     <DefineConstants>TRACE;DEBUG;v2019</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,8 +33,6 @@
     <DefineConstants>TRACE;v2019</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -117,8 +113,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AcadLib" Version="1.1.116" ExcludeAssets="runtime;build" />
-    <PackageReference Include="NetLib" Version="1.1.119" ExcludeAssets="runtime;build" />
+    <PackageReference Include="AcadLib" Version="1.2.123" ExcludeAssets="runtime;build" />
+    <PackageReference Include="NetLib" Version="1.1.123" ExcludeAssets="runtime;build" />
     <PackageReference Include="Fody" Version="4.0.2" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
   </ItemGroup>
