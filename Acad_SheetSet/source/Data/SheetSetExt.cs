@@ -9,24 +9,22 @@
 #elif v2019
     using ACSMCOMPONENTS23Lib;
 #endif
-    using JetBrains.Annotations;
 
     public static class SheetSetExt
     {
-        [CanBeNull]
-        public static object GetCustomPropertyValue([NotNull] this IAcSmComponent comp, [NotNull] string propName)
+        public static object GetCustomPropertyValue(this IAcSmComponent comp, string propName)
         {
             var prop = comp.GetProperty(propName);
             return prop?.GetValue();
         }
 
-        public static AcSmCustomPropertyValue GetProperty([NotNull] this IAcSmComponent comp, string propName)
+        public static AcSmCustomPropertyValue GetProperty(this IAcSmComponent comp, string propName)
         {
             var bag = comp.GetCustomPropertyBag();
             return bag.GetProperty(propName);
         }
 
-        public static void SetCustomPropertyValue([NotNull] this IAcSmComponent comp, [NotNull] string propName, object value)
+        public static void SetCustomPropertyValue(this IAcSmComponent comp, string propName, object value)
         {
             var prop = comp.GetProperty(propName);
             if (prop == null)
@@ -37,7 +35,7 @@
             prop.SetValue(value);
         }
 
-        public static IEnumerable<TItem> SsToList<TItem, TEnum>(TEnum enumerator, [NotNull] Func<TEnum, TItem> next)
+        public static IEnumerable<TItem> SsToList<TItem, TEnum>(TEnum enumerator, Func<TEnum, TItem> next)
         {
             while (true)
             {
@@ -51,9 +49,8 @@
             }
         }
 
-        [NotNull]
-        public static List<SSProp> GetCustomProperties([NotNull] this IAcSmComponent comp, bool removeProps = false,
-            [CanBeNull] SheetSet ss = null)
+        public static List<SSProp> GetCustomProperties(this IAcSmComponent comp, bool removeProps = false,
+            SheetSet ss = null)
         {
             var cpb = comp.GetCustomPropertyBag();
             var props = new List<SSProp>();
@@ -118,8 +115,8 @@
             return flags == PropType.SheetSet ? PropertyFlags.CUSTOM_SHEETSET_PROP : PropertyFlags.CUSTOM_SHEET_PROP;
         }
 
-        public static void AddCustomProperty([NotNull] this AcSmCustomPropertyBag bag, [NotNull] IAcSmComponent comp,
-            [NotNull] SSProp prop, [CanBeNull] SheetSet ss = null)
+        public static void AddCustomProperty(this AcSmCustomPropertyBag bag, IAcSmComponent comp,
+            SSProp prop, SheetSet ss = null)
         {
             var customProp = new AcSmCustomPropertyValue();
             customProp.InitNew(comp);

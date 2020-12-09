@@ -6,9 +6,9 @@
     public partial class SSOptionsView
     {
         public SSOptionsView(SSOptionsVM vm)
-            : base (vm)
         {
             InitializeComponent();
+            DataContext = vm;
         }
     }
 }

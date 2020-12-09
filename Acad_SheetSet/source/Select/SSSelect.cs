@@ -1,16 +1,15 @@
 ﻿namespace Acad_SheetSet.Select
 {
+    using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Reactive;
+    using System.Windows.Input;
     using Data;
-    using JetBrains.Annotations;
+    using MicroMvvm;
     using Microsoft.Win32;
-    using NetLib;
-    using NetLib.WPF;
     using Numeration;
-    using ReactiveUI;
-    using ReactiveUI.Legacy;
+    using Utils;
     using static Data.SheetSetExt;
 #if v2017
     using ACSMCOMPONENTS21Lib;
@@ -18,64 +17,80 @@
     using ACSMCOMPONENTS23Lib;
 #endif
 
-    public class SSSelect : BaseModel
+    public class SSSelect : ModelBase
     {
         private readonly NumerationVM model;
         private dynamic mgr;
 
         public SSSelect(NumerationVM model)
-            : base(model)
         {
             this.model = model;
             mgr = new AcSmSheetSetMgr();
-            SheetSets = new ReactiveList<SheetSet>(GetSheetSets());
-            SheetSet = SheetSets.FirstOrDefault();
-            SelectFile = CreateCommand(SelectFileExec);
+            var sheetSets = GetSheetSets().ToList();
+            SheetSets = new ObservableCollection<SheetSet>(sheetSets);
+            SheetSet = sheetSets.FirstOrDefault();
+            SelectFile = new RelayCommand(SelectFileExec);
         }
 
-        public ReactiveCommand<Unit, Unit> SelectFile { get; set; }
+        public ICommand SelectFile { get; set; }
 
         public SheetSet SheetSet { get; set; }
 
-        public ReactiveList<SheetSet> SheetSets { get; set; }
+        public ObservableCollection<SheetSet> SheetSets { get; set; }
 
-        [NotNull]
         private IEnumerable<SheetSet> GetSheetSets()
         {
             return SsToList((IAcSmEnumDatabase)mgr.GetDatabaseEnumerator(), e => e.Next())
-                .SelectTry(s => new SheetSet(s, model.Options.Options));
+                .Select(s =>
+                {
+                    try
+                    {
+                        return new SheetSet(s, model.Options.Options);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }).Where(w => w != null);
         }
 
         private void SelectFileExec()
         {
-            var dialog = new OpenFileDialog
+            try
             {
-                Multiselect = false,
-                CheckFileExists = true,
-                Filter = "Подшивка (*.dst)|*.dst",
-                Title = "Выбор файла подшивки"
-            };
-            if (dialog.ShowDialog() == true)
-            {
-                AcSmDatabase ssDb = null;
-                try
+                var dialog = new OpenFileDialog
                 {
-                    ssDb = mgr.FindOpenDatabase(dialog.FileName);
-                }
-                catch
+                    Multiselect = false,
+                    CheckFileExists = true,
+                    Filter = "Подшивка (*.dst)|*.dst",
+                    Title = "Выбор файла подшивки"
+                };
+                if (dialog.ShowDialog() == true)
                 {
-                    //
-                }
+                    AcSmDatabase ssDb = null;
+                    try
+                    {
+                        ssDb = mgr.FindOpenDatabase(dialog.FileName);
+                    }
+                    catch
+                    {
+                        //
+                    }
 
-                if (ssDb != null)
-                    SheetSet = SheetSets.FirstOrDefault(s => s.File.EqualsIgnoreCase(dialog.FileName));
-                else
-                {
-                    ssDb = mgr.OpenDatabase(dialog.FileName);
-                    var ss = new SheetSet(ssDb, model.Options.Options);
-                    SheetSets.Add(ss);
-                    SheetSet = ss;
+                    if (ssDb != null)
+                        SheetSet = SheetSets.FirstOrDefault(s => s.File.EqualsIgnoreCase(dialog.FileName));
+                    else
+                    {
+                        ssDb = mgr.OpenDatabase(dialog.FileName);
+                        var ss = new SheetSet(ssDb, model.Options.Options);
+                        SheetSets.Add(ss);
+                        SheetSet = ss;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ex.ShowMessage();
             }
         }
     }

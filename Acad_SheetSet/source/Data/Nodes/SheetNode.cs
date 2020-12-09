@@ -6,24 +6,20 @@
 #elif v2019
     using ACSMCOMPONENTS23Lib;
 #endif
-    using JetBrains.Annotations;
-    using ReactiveUI;
 
     public class SheetNode : BaseNode
     {
-        [NotNull] public readonly AcSmSheet sheet;
+        public readonly AcSmSheet sheet;
+        private string _numberNew;
+        private string _crossNumberNew;
 
-        public SheetNode([NotNull] AcSmSheet sheet, [NotNull] SheetSet ss)
+        public SheetNode(AcSmSheet sheet, SheetSet ss)
             : base(ss)
         {
             this.sheet = sheet;
             Name = sheet.GetTitle();
             Number = sheet.GetNumber();
             CrossNumber = sheet.GetCustomPropertyValue(ss.options.PropCrossNumberName)?.ToString();
-            this.WhenAnyValue(v => v.NumberNew)
-                .Subscribe(s => HasNewNumber = NumberNew != null && NumberNew != Number);
-            this.WhenAnyValue(v => v.CrossNumberNew)
-                .Subscribe(s => HasNewCrossNumber = CrossNumberNew != null && CrossNumberNew != CrossNumber);
             dynamic layout = sheet.GetLayout();
             Layout = layout.GetName();
             File = layout.GetFileName();
@@ -41,7 +37,16 @@
         /// <summary>
         ///     Новый сквозной номер согласно нумерации
         /// </summary>
-        public string CrossNumberNew { get; set; }
+        public string CrossNumberNew
+        {
+            get => _crossNumberNew;
+            set
+            {
+                _crossNumberNew = value;
+                HasNewCrossNumber = CrossNumberNew != null && CrossNumberNew != CrossNumber;
+                RaisePropertyChanged();
+            }
+        }
 
         public bool HasNewCrossNumber { get; set; }
 
@@ -55,7 +60,16 @@
         /// <summary>
         ///     Новый номер листа согласно нумерации
         /// </summary>
-        public string NumberNew { get; set; }
+        public string NumberNew
+        {
+            get => _numberNew;
+            set
+            {
+                _numberNew = value;
+                HasNewNumber = NumberNew != null && NumberNew != Number;
+                RaisePropertyChanged();
+            }
+        }
 
         public void SetCrossNumber()
         {

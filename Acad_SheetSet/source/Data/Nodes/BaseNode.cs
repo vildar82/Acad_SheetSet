@@ -2,10 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using JetBrains.Annotations;
-    using NetLib.WPF;
+    using MicroMvvm;
 
-    public abstract class BaseNode : BaseModel, ISSNode
+    public abstract class BaseNode : ModelBase, ISSNode
     {
         protected readonly SheetSet ss;
 
@@ -18,7 +17,6 @@
 
         public ObservableCollection<ISSNode> Nodes { get; set; } = new ObservableCollection<ISSNode>();
 
-        [NotNull]
         public List<SheetNode> GetSheets()
         {
             var sheets = new List<SheetNode>();

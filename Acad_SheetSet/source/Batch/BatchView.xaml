@@ -7,6 +7,7 @@
              xmlns:nodes="clr-namespace:Acad_SheetSet.Batch.Nodes"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:controls="http://metro.pik.com/winfx/xaml/controls"
              d:DataContext="{d:DesignInstance local:BatchVM, IsDesignTimeCreatable=True}"
              Name="uc"
              mc:Ignorable="d" >
@@ -31,7 +32,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Foreground="Red" ToolTip="Файл не найден"
-                        mah:VisibilityHelper.IsHidden="{Binding IsExist}"
+                        controls:VisibilityHelper.IsHidden="{Binding IsExist}"
                         Command="{Binding DataContext.CheckExistFile, ElementName=uc}"
                         CommandParameter="{Binding}">
                     <iconPacks:Material Kind="Refresh" />

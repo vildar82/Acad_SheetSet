@@ -1,9 +1,9 @@
 ﻿namespace Acad_SheetSet.Batch.Nodes
 {
     using System.Windows.Media;
-    using NetLib.WPF;
+    using MicroMvvm;
 
-    public abstract class NodeBase : BaseModel
+    public abstract class NodeBase : ModelBase
     {
         public string Name { get; set; }
 

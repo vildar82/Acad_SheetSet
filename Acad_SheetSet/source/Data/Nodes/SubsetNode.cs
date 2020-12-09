@@ -6,14 +6,13 @@
 #elif v2019
     using ACSMCOMPONENTS23Lib;
 #endif
-    using JetBrains.Annotations;
     using static SheetSetExt;
 
     public class SubsetNode : BaseNode
     {
-        [NotNull] private readonly AcSmSubset subset;
+        private readonly AcSmSubset subset;
 
-        public SubsetNode([NotNull] AcSmSubset subset, SheetSet ss)
+        public SubsetNode(AcSmSubset subset, SheetSet ss)
             : base (ss)
         {
             this.subset = subset;
@@ -21,7 +20,6 @@
             Nodes = GetNodes();
         }
 
-        [NotNull]
         private ObservableCollection<ISSNode> GetNodes()
         {
             var nodes = new ObservableCollection<ISSNode>();

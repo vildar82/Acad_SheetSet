@@ -4,34 +4,30 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Windows.Input;
     using System.Windows.Media;
-    using AcadLib;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
-    using JetBrains.Annotations;
-    using NetLib.Monad;
-    using NetLib.WPF;
+    using MicroMvvm;
     using Nodes;
     using Numeration;
     using Options;
-    using ReactiveUI;
+    using Utils;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
     using Commands = Commands;
-    using Unit = System.Reactive.Unit;
 
-    public class BatchVM : BaseModel
+    public class BatchVM : ViewModelBase
     {
         private static BatchVM batchVm;
         private static NodeFile internalFile;
         private static Brush okColor = new SolidColorBrush(Colors.LightGreen);
         private static Brush errColor = new SolidColorBrush(Colors.Red);
 
-        public BatchVM([NotNull] NumerationVM model)
-            : base (model)
+        public BatchVM(NumerationVM model)
         {
             Model = model;
-            Batch = CreateCommand(BatchExec);
-            CheckExistFile = CreateCommand<NodeFile>(CheckExistFileExec);
+            Batch = new RelayCommand(BatchExec);
+            CheckExistFile = new RelayCommand<NodeFile>(CheckExistFileExec);
             if (model.Options.Options.Batch == null)
             {
                 model.Options.Options.Batch = new BatchOptions();
@@ -49,15 +45,15 @@
 
         public BatchOptions Options { get; set; }
 
-        public ReactiveCommand<Unit, Unit> Batch { get; set; }
+        public ICommand Batch { get; set; }
 
         public bool IsBatchFiles { get; set; } = true;
 
         public bool IsBatchLayouts { get; set; } = true;
 
-        public ReactiveCommand<NodeFile, Unit> CheckExistFile { get; set; }
+        public ICommand CheckExistFile { get; set; }
 
-        private void CheckExistFileExec([NotNull] NodeFile nodeFile)
+        private void CheckExistFileExec(NodeFile nodeFile)
         {
             nodeFile.IsExist = File.Exists(nodeFile.Name);
         }
@@ -98,7 +94,7 @@
             Nodes = nodes;
         }
 
-        private void SetToBatch([NotNull] List<NodeBase> nodes, List<NodeBase> oldNodes)
+        private void SetToBatch(List<NodeBase> nodes, List<NodeBase> oldNodes)
         {
             foreach (var node in nodes)
             {
@@ -123,30 +119,30 @@
 
             if (!IsBatchFiles && !IsBatchLayouts)
             {
-                ShowMessage("Отключена обработка файлов и листов.");
+                AcadHelper.ShowMessage("Отключена обработка файлов и листов.");
                 return;
             }
 
             Execute(AcadHelper.Doc, nameof(Commands._InternalUse_SSBatchSession) + " ");
         }
 
-        private static void BatchLayout([NotNull] Document doc, [NotNull] NodeLayout nodeLayout)
+        private static void BatchLayout(Document doc, NodeLayout nodeLayout)
         {
             Application.SetSystemVariable("CLAYOUT", nodeLayout.Name);
             Command(doc, batchVm.Options.FileExecute);
         }
 
-        private static void Execute([NotNull] Document doc, [NotNull] string execute)
+        private static void Execute(Document doc, string execute)
         {
             doc.SendStringToExecute(execute, true, false, false);
         }
 
-        private static void Command([NotNull] Document doc, [NotNull] string command)
+        private static void Command(Document doc, string command)
         {
             doc.Editor.Command(command);
         }
 
-        public static void InternalBatchModal([NotNull] Document doc)
+        public static void InternalBatchModal(Document doc)
         {
             if (internalFile == null)
             {
@@ -212,7 +208,14 @@
                 if (internalFile.NeedCloseFile)
                 {
                     var adoc = AcadHelper.Doc;
-                    adoc.Try(d => d.CloseAndDiscard());
+                    try
+                    {
+                        adoc.CloseAndDiscard();
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
                 }
 
                 internalFile = internalFile.NextFile;

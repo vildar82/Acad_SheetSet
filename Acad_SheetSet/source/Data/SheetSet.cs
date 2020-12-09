@@ -4,12 +4,10 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using AcadLib.Errors;
-    using JetBrains.Annotations;
-    using NetLib.Monad;
     using Nodes;
     using Options;
     using Props;
+    using Utils;
     using static SheetSetExt;
 #if v2017
     using ACSMCOMPONENTS21Lib;
@@ -23,7 +21,7 @@
         public readonly SSOptions options;
         public AcSmSheetSet ss;
 
-        public SheetSet([NotNull] AcSmDatabase ssDb, SSOptions options)
+        public SheetSet(AcSmDatabase ssDb, SSOptions options)
         {
             this.ssDb = ssDb;
             this.options = options;
@@ -45,8 +43,7 @@
 
         public List<SSProp> Props { get; set; }
 
-        [CanBeNull]
-        public ISSNode GetNode([NotNull] IAcSmComponent item)
+        public ISSNode GetNode(IAcSmComponent item)
         {
             ISSNode node = null;
             var typeName = item.GetTypeName();
@@ -87,13 +84,28 @@
                         sheet.CrossNumberNew = crossNumber.ToString();
                         if (!previewOnly)
                         {
-                            sheet.Try(s => s.SetNumber(), (s, e) =>
-                                Inspector.AddError($"Ошибка записи номера '{s.Name}'={s.NumberNew} - {e.Message}"));
+                            try
+                            {
+                                sheet.SetNumber();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Inspector.AddError(
+                                    $"Ошибка записи номера '{sheet.Name}'={sheet.NumberNew} - {ex.Message}");
+                            }
+
                             if (setCrossNumber)
                             {
-                                sheet.Try(s => s.SetCrossNumber(), (s, e) =>
+                                try
+                                {
+                                    sheet.SetCrossNumber();
+                                }
+                                catch (Exception ex)
+                                {
                                     Inspector.AddError(
-                                        $"Ошибка записи сквозного номера '{s.Name}'={s.CrossNumberNew} - {e.Message}"));
+                                        $"Ошибка записи сквозного номера '{sheet.Name}'={sheet.CrossNumberNew} - {ex.Message}");
+                                }
                             }
                         }
 
@@ -122,13 +134,12 @@
             Nodes = nodes;
         }
 
-        [NotNull]
         private List<SSProp> GetProps()
         {
             return ss.GetCustomProperties();
         }
 
-        public void CreateProps([CanBeNull] List<SSProp> props)
+        public void CreateProps(List<SSProp> props)
         {
             using (new SSLock(ssDb))
             {

@@ -4,9 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Acad_SheetSet.Props"
-             xmlns:controls="clr-namespace:NetLib.WPF.Controls;assembly=NetLib"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:converters="clr-namespace:NetLib.WPF.Converters;assembly=NetLib"
+             xmlns:wpf="clr-namespace:Acad_SheetSet.Wpf"
              d:DataContext="{d:DesignInstance local:PropsVM, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" >
     <Grid>
@@ -16,9 +15,9 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Файл CSV с параметрами:"
-                   ToolTip="Формат csv - обязательно с заголовками, пример:&#x0a;Name,Value,Type&#x0a;СквознойНомер,1,0"/>
-        <controls:PathSelector Grid.Row="1" SelectedPath="{Binding CsvFile}" Margin="5"/>
+        <TextBlock Grid.Row="0" Text="Файл CSV:"
+                   ToolTip="Вставьте путь к файлу csv с параметрами. Формат csv - обязательно с заголовками, пример:&#x0a;Name,Value,Type&#x0a;СквознойНомер,1,0"/>
+        <TextBox Grid.Row="1" Text="{Binding CsvFile}" Margin="5"/>
         <Grid Grid.Row="2" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -36,7 +35,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Имя" Binding="{Binding Name}" />
                             <DataGridTextColumn Header="Значение" Binding="{Binding Value}" />
-                            <DataGridTextColumn Header="Тип" Binding="{Binding Type, Converter={converters:EnumDescriptionConverter}}" />
+                            <DataGridTextColumn Header="Тип" Binding="{Binding Type, Converter={wpf:EnumDescriptionConverter}}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -53,7 +52,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Имя" Binding="{Binding Name}" />
                             <DataGridTextColumn Header="Значение" Binding="{Binding Value}" />
-                            <DataGridTextColumn Header="Тип" Binding="{Binding Type, Converter={converters:EnumDescriptionConverter}}" />
+                            <DataGridTextColumn Header="Тип" Binding="{Binding Type, Converter={wpf:EnumDescriptionConverter}}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

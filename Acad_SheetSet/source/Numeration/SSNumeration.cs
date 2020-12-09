@@ -7,8 +7,9 @@
     {
         public void Numeration()
         {
-            var vm = new NumerationVM();
-            var view = new NumerationView(vm);
+            var view = new NumerationView();
+            var vm = new NumerationVM(view);
+
             view.Show();
         }
     }

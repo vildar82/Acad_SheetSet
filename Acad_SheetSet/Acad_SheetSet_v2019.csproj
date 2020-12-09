@@ -10,7 +10,7 @@
     <RootNamespace>Acad_SheetSet</RootNamespace>
     <AssemblyName>Acad_SheetSet_v2019</AssemblyName>
     <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>c:\Autodesk\AutoCAD\Pik\Settings\Script\NET\SheetSet\</OutputPath>
+    <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>TRACE;DEBUG;v2019</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>c:\Autodesk\AutoCAD\Pik\Settings\Script\NET\SheetSet\</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
     <DefineConstants>TRACE;v2019</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -86,6 +86,16 @@
     <Compile Include="source\Select\SSSelectControl.xaml.cs">
       <DependentUpon>SSSelectControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="source\Utils\AcadHelper.cs" />
+    <Compile Include="source\Utils\DllResolver.cs" />
+    <Compile Include="source\Utils\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="source\Utils\EnumExt.cs" />
+    <Compile Include="source\Utils\Inspector.cs" />
+    <Compile Include="source\Utils\JsonExt.cs" />
+    <Compile Include="source\Utils\LocalFileData.cs" />
+    <Compile Include="source\Utils\SerializerXml.cs" />
+    <Compile Include="source\Wpf\ConvertorBase.cs" />
+    <Compile Include="source\Wpf\EnumDescriptionConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
@@ -111,12 +121,20 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="source\Wpf\Styles.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AcadLib" Version="1.2.123" ExcludeAssets="runtime;build" />
-    <PackageReference Include="NetLib" Version="1.1.123" ExcludeAssets="runtime;build" />
-    <PackageReference Include="Fody" Version="4.0.2" />
-    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
+    <PackageReference Include="BimLab.Metro" Version="1.0.1" />
+    <PackageReference Include="CsvHelper" Version="18.0.0" />
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
+    <PackageReference Include="Micro_MVVM" Version="1.0.0" />
+    <PackageReference Include="ModPlus.AutoCAD.API.2019" Version="1.0.0" ExcludeAssets="build;runtime" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="ACSMCOMPONENTS23Lib">

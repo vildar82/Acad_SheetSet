@@ -6,13 +6,12 @@
 #elif v2019
     using ACSMCOMPONENTS23Lib;
 #endif
-    using JetBrains.Annotations;
 
     public class SSLock : IDisposable
     {
         private readonly AcSmDatabase ssDb;
 
-        public SSLock([NotNull] AcSmDatabase ssDb)
+        public SSLock(AcSmDatabase ssDb)
         {
             this.ssDb = ssDb;
             if (ssDb.GetLockStatus() == AcSmLockStatus.AcSmLockStatus_UnLocked)

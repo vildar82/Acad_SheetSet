@@ -1,18 +1,16 @@
 ﻿namespace Acad_SheetSet.Options
 {
-    using NetLib;
-    using NetLib.WPF;
-    using Path = AcadLib.IO.Path;
+    using MicroMvvm;
+    using Utils;
 
-    public class SSOptionsVM : BaseViewModel
+    public class SSOptionsVM : ViewModelBase
     {
-        private FileData<SSOptions> data;
+        private LocalFileData<SSOptions> data;
 
         public SSOptionsVM()
         {
-            var serverFile = Path.GetSharedCommonFile("SheetSet", "SheetSetOptions");
-            var localFile = Path.GetUserPluginFile("SheetSet", "SheetSetOptions");
-            data = new FileData<SSOptions>(serverFile,localFile, false);
+            var localFile = AcadHelper.GetUserPluginFile("SheetSetOptions");
+            data = new LocalFileData<SSOptions>(localFile, false);
             data.TryLoad();
             if (data.Data == null)
             {
@@ -29,7 +27,7 @@
 
         public void Save()
         {
-            data.Save();
+            data.TrySave();
         }
     }
 }
