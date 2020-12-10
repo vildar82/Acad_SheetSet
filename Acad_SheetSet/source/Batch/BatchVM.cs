@@ -117,6 +117,18 @@
                 return;
             }
 
+            if (IsBatchFiles && batchVm.Options.FileExecute.IsNullOrEmpty())
+            {
+                AcadHelper.ShowMessage("Не задана команда обработки файлов.");
+                return;
+            }
+
+            if (IsBatchLayouts && batchVm.Options.LayoutExecute.IsNullOrEmpty())
+            {
+                AcadHelper.ShowMessage("Не задана команда обработки листов.");
+                return;
+            }
+
             if (!IsBatchFiles && !IsBatchLayouts)
             {
                 AcadHelper.ShowMessage("Отключена обработка файлов и листов.");
@@ -129,7 +141,7 @@
         private static void BatchLayout(Document doc, NodeLayout nodeLayout)
         {
             Application.SetSystemVariable("CLAYOUT", nodeLayout.Name);
-            Command(doc, batchVm.Options.FileExecute);
+            Command(doc, batchVm.Options.LayoutExecute);
         }
 
         private static void Execute(Document doc, string execute)
