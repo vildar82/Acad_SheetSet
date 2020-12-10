@@ -1,6 +1,3 @@
-// Khisyametdinovvt Хисяметдинов Вильдар Тямильевич
-// 2018 04 25 14:35
-
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -23,3 +20,5 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("00d1461e-f693-43b8-bc2e-ea1119f0497b")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

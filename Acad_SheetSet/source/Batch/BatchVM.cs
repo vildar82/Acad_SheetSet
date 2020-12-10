@@ -151,7 +151,7 @@
 
             try
             {
-                if (batchVm.IsBatchFiles)
+                if (batchVm.IsBatchFiles && internalFile.ToBatch)
                 {
                     if (!doc.Database.TileMode)
                     {
@@ -193,11 +193,11 @@
             }
         }
 
-        public static void InternalBatchSession(Document document)
+        public static void InternalBatchSession(Document doc)
         {
             if (internalFile == null)
             {
-                internalFile = batchVm?.Nodes?.First();
+                internalFile = batchVm?.Nodes?.FirstOrDefault();
                 if (internalFile == null)
                 {
                     return;
@@ -229,15 +229,25 @@
 
             internalFile.BatchResult = null;
             internalFile.Color = null;
-            var doc = AcadHelper.GetOpenedDocument(internalFile.Name);
-            if (doc == null)
+
+            if (NeedBatchFile(internalFile))
             {
-                internalFile.NeedCloseFile = true;
-                doc = Application.DocumentManager.Open(internalFile.Name);
-                Application.DocumentManager.MdiActiveDocument = doc;
+                doc = AcadHelper.GetOpenedDocument(internalFile.Name);
+                if (doc == null)
+                {
+                    internalFile.NeedCloseFile = true;
+                    doc = Application.DocumentManager.Open(internalFile.Name);
+                    Application.DocumentManager.MdiActiveDocument = doc;
+                }
             }
 
             Execute(doc, nameof(Commands._InternalUse_SSBatchModal) + " ");
+        }
+
+        private static bool NeedBatchFile(NodeFile nodeFile)
+        {
+            return batchVm.IsBatchFiles && nodeFile.ToBatch ||
+                   batchVm.IsBatchLayouts && nodeFile.Nodes.Any(n => n.ToBatch);
         }
     }
 }
